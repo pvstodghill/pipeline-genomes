@@ -40,7 +40,7 @@ if [ "$BUSCO_S_CUTOFF" ] ; then
 fi
 
 cat ${FINAL}/__report__.txt \
-    | ./scripts/filter-busco-report.pl $_args_ \
+    | ${PIPELINE}/scripts/filter-busco-report.pl $_args_ \
     | tail -n+2 \
     | cut -f1 \
 	  > ${FINAL}/__filtered_strains__.txt
