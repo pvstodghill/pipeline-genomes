@@ -9,6 +9,12 @@
 rm -rf ${BUSCO}
 mkdir -p ${BUSCO}
 
+if [ "$BUSCO_LINEAGE" ] ; then
+    LINEAGE_ARG="--lineage_dataset $BUSCO_LINEAGE"
+else
+    LINEAGE_ARG="--auto-lineage-prok"
+fi
+
 for FAA in ${PROTEOMES}/*.faa ; do
     STRAIN=$(basename $FAA .faa)
     echo 1>&2 "# Running BUSCO: $STRAIN"
@@ -18,7 +24,7 @@ for FAA in ${PROTEOMES}/*.faa ; do
 		     -i ${FAA} \
 		     -o ${BUSCO}/output_${STRAIN} \
 		     -m proteins \
-		     --auto-lineage-prok \
+		     ${LINEAGE_ARG} \
 		     -c ${THREADS} \
 		     --download_path ${BUSCO}/downloads
     done

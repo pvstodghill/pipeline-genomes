@@ -24,7 +24,9 @@ PROKKA_GENUS=Pantoea
 
 # ------------------------------------------------------------------------
 
-#FIXME: specify busco lineage (--auto-lineage-prok)
+
+BUSCO_LINEAGE= # use --auto-lineage-prok
+#BUSCO_LINEAGE=enterobacterales_odb10
 
 #BUSCO_C_CUTOFF=99.8 # crazy strict
 BUSCO_S_CUTOFF=95.0 # pretty loose
