@@ -24,7 +24,15 @@ if [ -e ${DOWNLOADS}/ncbi_00 ] ; then
 		echo 1>&2 "Already exists: ${GENOMES}/$name.fna"
 		exit 1
 	    fi
-	    cat ${DOWNLOADS}/ncbi_*/ncbi_dataset/data/$accession/*genomic.fna > ${GENOMES}/$name.fna
+	    (
+		shopt -s nullglob
+		n=$(ls /dev/null ${DOWNLOADS}/ncbi_*/ncbi_dataset/data/$accession/*.fna | wc -l)
+		if [ "$n" != 2 ] ; then
+		    echo 1>&2 "Cannot determine genome for $accession"
+		    exit 1
+		fi
+	    )
+	    cp ${DOWNLOADS}/ncbi_*/ncbi_dataset/data/$accession/*.fna ${GENOMES}/$name.fna
 	    if [ -e ${GENOMES}/$name.faa ] ; then
 		echo 1>&2 "Already exists: ${GENOMES}/$name.faa"
 		exit 1
