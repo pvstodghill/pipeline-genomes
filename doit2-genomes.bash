@@ -13,7 +13,7 @@ if [ -e ${DOWNLOADS}/ncbi_00 ] ; then
     echo 1>&2 "# Collect the NCBI genomes"
 
     cat ${DOWNLOADS}/ncbi_*/ncbi_dataset/data/assembly_data_report.jsonl \
-	| ${PIPELINE}/scripts/make-filenames-from-assembly_data_report -s ${EXCLUDE_ACCESSIONS} \
+	| ${PIPELINE}/scripts/make-filenames-from-assembly_data_report ${STRAIN_NAME_ARGS}  ${EXCLUDE_ACCESSIONS} \
 	| (
 	IFS=$'\t'
 	while read -a accession_name ; do
