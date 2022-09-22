@@ -5,7 +5,9 @@
 # ------------------------------------------------------------------------
 
 # NCBI_REFSEQ_TAXONS=574096 # P.allii
+# NCBI_REFSEQ_REFERENCE_ONLY=1
 # NCBI_GENBANK_TAXONS=
+# NCBI_GENBANK_REFERENCE_ONLY=1
 # NCBI_ACCESSIONS=GCF_017474015.1 # P.ananatis OC5a
 
 # ------------------------------------------------------------------------
@@ -19,7 +21,7 @@ STRAIN_NAME_ARGS+=" -d" # Throw error if dup names detected
 # EXCLUDE_ACCESSIONS=
 # EXCLUDE_ACCESSIONS+=" GCF_002095545.1" # LMG_24248~
 
-MORE_GENOMES=inputs
+MORE_GENOMES=local
 
 # ------------------------------------------------------------------------
 

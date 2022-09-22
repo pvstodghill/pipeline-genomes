@@ -27,12 +27,14 @@ if [ -e ${DOWNLOADS}/ncbi_00 ] ; then
 	    (
 		shopt -s nullglob
 		n=$(ls /dev/null ${DOWNLOADS}/ncbi_*/ncbi_dataset/data/$accession/*.fna | wc -l)
-		if [ "$n" != 2 ] ; then
+		if [ "$n" == 1 ] ; then
 		    echo 1>&2 "Cannot determine genome for $accession"
 		    exit 1
 		fi
 	    )
-	    cp ${DOWNLOADS}/ncbi_*/ncbi_dataset/data/$accession/*.fna ${GENOMES}/$name.fna
+	    ls ${DOWNLOADS}/ncbi_*/ncbi_dataset/data/$accession/*.fna \
+		| grep -v '\(cds_from_genomic\|rna\)\.fna' \
+		| xargs cat > ${GENOMES}/$name.fna
 	    if [ -e ${GENOMES}/$name.faa ] ; then
 		echo 1>&2 "Already exists: ${GENOMES}/$name.faa"
 		exit 1

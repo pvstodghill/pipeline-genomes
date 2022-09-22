@@ -12,15 +12,22 @@ _TAG=$(printf "%02d" $_I)
 # Download by taxon (refseq)
 # ------------------------------------------------------------------------
 
+BOTH_ARGS=""
+BOTH_ARGS+=" --no-progressbar"
+BOTH_ARGS+=" --exclude-genomic-cds"
+BOTH_ARGS+=" --exclude-gff3"
+BOTH_ARGS+=" --exclude-rna"
+
+REFSEQ_ARGS="--assembly-source refseq"
+if [ "$NCBI_REFSEQ_REFERENCE_ONLY" ] ; then
+    REFSEQ_ARGS+=" --reference"
+fi
+
 for TAXID in ${NCBI_REFSEQ_TAXONS} ; do
 
     echo 1>&2 "# Download (refseq) taxon $TAXID"
     datasets download genome \
-	     --no-progressbar \
-	     --assembly-source refseq \
-	     --exclude-genomic-cds \
-	     --exclude-gff3 \
-	     --exclude-rna \
+	     ${BOTH_ARGS} ${REFSEQ_ARGS} \
 	     --filename ${DOWNLOADS}/ncbi_${_TAG}.zip \
 	     taxon ${TAXID}
 
@@ -35,15 +42,16 @@ done
 # Download by taxon (genbank)
 # ------------------------------------------------------------------------
 
+GENBANK_ARGS="--assembly-source genbank"
+if [ "$NCBI_GENBANK_REFERENCE_ONLY" ] ; then
+    GENBANK_ARGS+=" --reference"
+fi
+
 for TAXID in ${NCBI_GENBANK_TAXONS} ; do
 
     echo 1>&2 "# Download (genbank) taxon $TAXID"
     datasets download genome \
-	     --no-progressbar \
-	     --assembly-source genbank \
-	     --exclude-genomic-cds \
-	     --exclude-gff3 \
-	     --exclude-rna \
+	     ${BOTH_ARGS} ${GENBANK_ARGS} \
 	     --filename ${DOWNLOADS}/ncbi_${_TAG}.zip \
 	     taxon ${TAXID}
 
