@@ -34,6 +34,7 @@ DATA=${DATA:-data}
 
 # ------------------------------------------------------------------------
 
+export HOWTO_MOUNT_DIR=$(realpath $(${PIPELINE}/howto/find-closest-ancester-dir . ${DATA} ${PIPELINE}))
 export HOWTO_TMPDIR=$(realpath ${DATA})/tmp
 
 if [ "$PACKAGES_FROM" = conda ] ; then
