@@ -9,11 +9,19 @@ mkdir -p ${GENOMES}
 # Collect the NCBI genomes
 # ------------------------------------------------------------------------
 
-if [ -e ${DOWNLOADS}/ncbi_00 ] ; then
-    echo 1>&2 "# Collect the NCBI genomes"
+if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
 
-    cat ${DOWNLOADS}/ncbi_*/ncbi_dataset/data/assembly_data_report.jsonl \
-	| ${PIPELINE}/scripts/make-filenames-from-assembly_data_report ${STRAIN_NAME_ARGS}  ${EXCLUDE_ACCESSIONS} \
+    echo 1>&2 "# Unzip the NCBI genomes"
+    NCBI_TMP=${GENOMES}/ncbi_tmp
+    mkdir ${NCBI_TMP}
+    for z in ${DOWNLOADS}/ncbi_*.zip ; do
+	ncbi_xx=$(basename $z .zip)
+	unzip -q -d ${NCBI_TMP}/${ncbi_xx} $z
+    done
+
+    echo 1>&2 "# Collect the NCBI genomes"
+    cat ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/assembly_data_report.jsonl \
+	| ${PIPELINE}/scripts/make-filenames-from-assembly_data_report ${GENOME_NAME_ARGS}  ${EXCLUDE_ACCESSIONS} \
 	| (
 	IFS=$'\t'
 	while read -a accession_name ; do
@@ -26,22 +34,25 @@ if [ -e ${DOWNLOADS}/ncbi_00 ] ; then
 	    fi
 	    (
 		shopt -s nullglob
-		n=$(ls /dev/null ${DOWNLOADS}/ncbi_*/ncbi_dataset/data/$accession/*.fna | wc -l)
+		n=$(ls /dev/null ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/*.fna | wc -l)
 		if [ "$n" == 1 ] ; then
 		    echo 1>&2 "Cannot determine genome for $accession"
 		    exit 1
 		fi
 	    )
-	    ls ${DOWNLOADS}/ncbi_*/ncbi_dataset/data/$accession/*.fna \
+	    ls ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/*.fna \
 		| grep -v '\(cds_from_genomic\|rna\)\.fna' \
 		| xargs cat > ${GENOMES}/$name.fna
 	    if [ -e ${GENOMES}/$name.faa ] ; then
 		echo 1>&2 "Already exists: ${GENOMES}/$name.faa"
 		exit 1
 	    fi
-	    cp ${DOWNLOADS}/ncbi_*/ncbi_dataset/data/$accession/protein.faa ${GENOMES}/$name.faa
+	    cp ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/protein.faa ${GENOMES}/$name.faa
 	done
     )
+
+    echo 1>&2 "# Deleting unzipped NCBI genomes"
+    rm -rf ${NCBI_TMP}
 fi
 
 # ------------------------------------------------------------------------
@@ -49,6 +60,7 @@ fi
 # ------------------------------------------------------------------------
 
 if [ "$MORE_GENOMES" ] ; then
+    dups=
     echo 1>&2 "# Collect the local genomes"
     for f in $MORE_GENOMES/*.f?a ; do
 	case "$f" in
@@ -60,10 +72,14 @@ if [ "$MORE_GENOMES" ] ; then
 	ff=$(basename $f)
 	if [ -e ${GENOMES}/$ff ] ; then
 	    echo 1>&2 "Already exists: ${GENOMES}/$ff"
-	    exit 1
+	    dups=1
+	else
+	    cp $f ${GENOMES}/$ff
 	fi
-	cp $f ${GENOMES}/$ff
     done
+    if [ "$dups" ] ; then
+	exit 1
+    fi
 fi
 
 # ------------------------------------------------------------------------

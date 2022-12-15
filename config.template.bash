@@ -12,11 +12,12 @@
 
 # ------------------------------------------------------------------------
 
-STRAIN_NAME_ARGS=
-STRAIN_NAME_ARGS+=" -s" # Do not include genus/species in strain names
-STRAIN_NAME_ARGS+=" -a" # Remove non-alphabetic chars from strain names
-STRAIN_NAME_ARGS+=" -u" # Make strain names uppercase
-STRAIN_NAME_ARGS+=" -d" # Throw error if dup names detected
+GENOME_NAME_ARGS=
+# GENOME_NAME_ARGS+=" -s" # Do not include genus/species in genome names
+# GENOME_NAME_ARGS+=" -a" # Remove non-alphabetic chars from genome names
+# GENOME_NAME_ARGS+=" -u" # Make genome names uppercase
+# GENOME_NAME_ARGS+=" -d" # Throw error if dup names detected
+GENOME_NAME_ARGS+=" -D" # Drop older redundent assemblies heuristically
 
 # EXCLUDE_ACCESSIONS=
 # EXCLUDE_ACCESSIONS+=" GCF_002095545.1" # LMG_24248~
