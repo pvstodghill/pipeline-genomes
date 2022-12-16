@@ -23,7 +23,7 @@ echo 1>&2 "# Generate BUSCO summary"
 	      -e 's/C:([0-9.%]+)\[S:([0-9.%]+),D:([0-9.%]+)\],F:([0-9.%]+),M:([0-9.%]+),n:([0-9.%]+)/\1\t\2\t\3\t\4\t\5\t\6/'
 ) > ${FINAL}/__report__.txt
 
-echo "## Unfiltered strain(s):" $(tail -n+2 ${FINAL}/__report__.txt | wc -l)
+# echo "## Unfiltered strain(s):" $(tail -n+2 ${FINAL}/__report__.txt | wc -l)
 
 # ------------------------------------------------------------------------
 # Apply cutoffs
@@ -32,11 +32,15 @@ echo "## Unfiltered strain(s):" $(tail -n+2 ${FINAL}/__report__.txt | wc -l)
 echo 1>&2 '# Apply cutoffs'
 
 _args_=
-if [ "$BUSCO_C_CUTOFF" ] ; then
-    _args_+=" -C $BUSCO_C_CUTOFF"
+_args_+=" -v"
+if [ "$FILTER_C_CUTOFF" ] ; then
+    _args_+=" -C $FILTER_C_CUTOFF"
 fi
-if [ "$BUSCO_S_CUTOFF" ] ; then
-    _args_+=" -S $BUSCO_S_CUTOFF"
+if [ "$FILTER_S_CUTOFF" ] ; then
+    _args_+=" -S $FILTER_S_CUTOFF"
+fi
+if [ "$FILTER_REQUIRED_LINEAGE" ] ; then
+    _args_+=" -d $FILTER_REQUIRED_LINEAGE"
 fi
 
 cat ${FINAL}/__report__.txt \
@@ -45,8 +49,15 @@ cat ${FINAL}/__report__.txt \
     | cut -f1 \
 	  > ${FINAL}/__filtered_strains__.txt
 
-echo "## Unfiltered strain(s):" $(cat ${FINAL}/__filtered_strains__.txt | wc -l )
+if [ "$FILTER_MANUALLY" ] ; then
+    echo 1>&2 "# Removing mannually:"
+    for name in $FILTER_MANUALLY ; do
+	sed -i -e '/^'$name'$/d' ${FINAL}/__filtered_strains__.txt
+	echo 1>&2 "## $name" 
+    done
+fi
 
+echo "## Final number of strain(s):" $(cat ${FINAL}/__filtered_strains__.txt | wc -l )
 
 # ------------------------------------------------------------------------
 # Collecting final genomes
