@@ -46,6 +46,7 @@ for FNA in ${GENOMES}/*.fna ; do
 
     cp ${OUTPUT}/output.faa ${PROKKA}/${STRAIN}.faa
     cp ${OUTPUT}/output.fna ${PROKKA}/${STRAIN}.fna
+    cp ${OUTPUT}/output.gff ${PROKKA}/${STRAIN}.gff+fna
     # cp ${OUTPUT}/output.gbk ${PROKKA}/${STRAIN}.gbk
     # cat ${OUTPUT}/output.gff \
     # 	| sed -e '/^##FASTA/,$d' \

@@ -68,7 +68,7 @@ echo 1>&2 '# Collecting final genomes'
 cat ${FINAL}/__filtered_strains__.txt \
     | (
     while read STRAIN ; do
-	for EXT in fna faa ; do
+	for EXT in fna faa gff+fna ; do
 	    if [ -e ${PROKKA}/${STRAIN}.${EXT} ] ; then
 		cp ${PROKKA}/${STRAIN}.${EXT} ${FINAL}/${STRAIN}.${EXT}
 	    elif [ -e ${GENOMES}/${STRAIN}.${EXT} ] ; then
