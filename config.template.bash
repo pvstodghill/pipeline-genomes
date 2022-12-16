@@ -22,23 +22,33 @@ GENOME_NAME_ARGS+=" -D" # Drop older redundent assemblies heuristically
 # EXCLUDE_ACCESSIONS=
 # EXCLUDE_ACCESSIONS+=" GCF_002095545.1" # LMG_24248~
 
-MORE_GENOMES=local
+# # Directory containing genomes to add
+#MORE_GENOMES=local
 
 # ------------------------------------------------------------------------
 
+# # Uncomment to reannotate with Prokka. Otherwise, use existing
+# # annotations.
 #FORCE_REANNOTATE=1
-PROKKA_GRAM=neg
-PROKKA_GENUS=Pantoea
+#PROKKA_GRAM=neg
+#PROKKA_GENUS=Pantoea
 #PROKKA_SPECIES=allii
 
 # ------------------------------------------------------------------------
 
-
 BUSCO_LINEAGE= # use --auto-lineage-prok
 #BUSCO_LINEAGE=enterobacterales_odb10
 
-#BUSCO_C_CUTOFF=99.8 # crazy strict
-BUSCO_S_CUTOFF=95.0 # pretty loose
+# ------------------------------------------------------------------------
+
+# # crazy strict
+#FILTER_C_CUTOFF=99.8
+#FILTER_REQUIRED_LINEAGE=enterobacterales
+# pretty standard
+FILTER_C_CUTOFF=95.0
+# FILTER_MANUALLY= # strains to remove for one reason or another
+# FILTER_MANUALLY+=" Fix_me_st1"
+# FILTER_MANUALLY+=" Fix_me_st2"
 
 # ------------------------------------------------------------------------
 
