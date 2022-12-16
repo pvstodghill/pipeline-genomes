@@ -30,6 +30,7 @@ GENOME_NAME_ARGS+=" -D" # Drop older redundent assemblies heuristically
 # # Uncomment to reannotate with Prokka. Otherwise, use existing
 # # annotations.
 #FORCE_REANNOTATE=1
+# # v-- You probably don't want to uncomment these. They have no effect.
 #PROKKA_GRAM=neg
 #PROKKA_GENUS=Pantoea
 #PROKKA_SPECIES=allii
