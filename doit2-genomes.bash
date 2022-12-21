@@ -20,38 +20,23 @@ if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
     done
 
     echo 1>&2 "# Collect the NCBI genomes"
-    cat ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/assembly_data_report.jsonl \
-	| ${PIPELINE}/scripts/make-filenames-from-assembly_data_report ${GENOME_NAME_ARGS}  ${EXCLUDE_ACCESSIONS} \
-	| (
-	IFS=$'\t'
-	while read -a accession_name ; do
-	    accession=${accession_name[0]}
-	    name=${accession_name[1]}
-	    echo 1>&2 "## $accession -> $name"
-	    if [ -e ${GENOMES}/$name.fna ] ; then
-		echo 1>&2 "Already exists: ${GENOMES}/$name.fna"
+    for d in ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/GC* ; do
+	accession=$(basename $d)
+	(
+	    shopt -s nullglob
+	    n=$(ls /dev/null ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/*.fna | wc -l)
+	    if [ "$n" == 1 ] ; then
+		echo 1>&2 "Cannot determine genome for $accession"
 		exit 1
 	    fi
-	    (
-		shopt -s nullglob
-		n=$(ls /dev/null ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/*.fna | wc -l)
-		if [ "$n" == 1 ] ; then
-		    echo 1>&2 "Cannot determine genome for $accession"
-		    exit 1
-		fi
-	    )
-	    ls ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/*.fna \
-		| grep -v '\(cds_from_genomic\|rna\)\.fna' \
-		| xargs cat > ${GENOMES}/$name.fna
-	    if [ -e ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/protein.faa ] ; then
-		if [ -e ${GENOMES}/$name.faa ] ; then
-		    echo 1>&2 "Already exists: ${GENOMES}/$name.faa"
-		    exit 1
-		fi
-		cp ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/protein.faa ${GENOMES}/$name.faa
-	    fi
-	done
-    )
+	)
+	ls ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/*.fna \
+	    | grep -v '\(cds_from_genomic\|rna\)\.fna' \
+	    | xargs cat > ${GENOMES}/$accession.fna
+	if [ -e ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/protein.faa ] ; then
+	    cp ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/protein.faa ${GENOMES}/$accession.faa
+	fi
+    done
 
     echo 1>&2 "# Deleting unzipped NCBI genomes"
     rm -rf ${NCBI_TMP}
