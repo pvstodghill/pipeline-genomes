@@ -43,11 +43,13 @@ if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
 	    ls ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/*.fna \
 		| grep -v '\(cds_from_genomic\|rna\)\.fna' \
 		| xargs cat > ${GENOMES}/$name.fna
-	    if [ -e ${GENOMES}/$name.faa ] ; then
-		echo 1>&2 "Already exists: ${GENOMES}/$name.faa"
-		exit 1
+	    if [ -e ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/protein.faa ] ; then
+		if [ -e ${GENOMES}/$name.faa ] ; then
+		    echo 1>&2 "Already exists: ${GENOMES}/$name.faa"
+		    exit 1
+		fi
+		cp ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/protein.faa ${GENOMES}/$name.faa
 	    fi
-	    cp ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/protein.faa ${GENOMES}/$name.faa
 	done
     )
 

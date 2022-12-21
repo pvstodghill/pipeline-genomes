@@ -14,8 +14,10 @@ _TAG=$(printf "%02d" $_I)
 
 COMMON_ARGS=""
 COMMON_ARGS+=" --no-progressbar"
-COMMON_ARGS+=" --include genome,protein,gtf,gbff,seq-report"
-
+COMMON_ARGS+=" --include genome,seq-report"
+if [ -z "$FORCE_REANNOTATE" ] ; then
+    COMMON_ARGS+=",protein,gtf,gbff"
+fi
 
 REFSEQ_ARGS="--assembly-source refseq"
 if [ "$NCBI_REFSEQ_REFERENCE_ONLY" ] ; then
