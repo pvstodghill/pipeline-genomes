@@ -71,6 +71,18 @@ if [ "$NCBI_ACCESSIONS" ] ; then
 fi
 
 # ------------------------------------------------------------------------
+# Extract meta-data
+# ------------------------------------------------------------------------
+
+if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
+    echo 1>&2 "# Extracting meta-data"
+    for z in ${DOWNLOADS}/ncbi_*.zip ; do
+	unzip -p $z ncbi_dataset/data/assembly_data_report.jsonl \
+	      > $(dirname $z)/$(basename $z .zip).jsonl
+    done
+fi
+
+# ------------------------------------------------------------------------
 # Done.
 # ------------------------------------------------------------------------
 
