@@ -40,6 +40,11 @@ if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
 
     echo 1>&2 "# Deleting unzipped NCBI genomes"
     rm -rf ${NCBI_TMP}
+
+    cat ${DOWNLOADS}/ncbi_*.jsonl \
+	| ${PIPELINE}/scripts/meta-data-from-assembly_data_report \
+	> ${GENOMES}/_metadata_.tsv
+
 fi
 
 # ------------------------------------------------------------------------
@@ -67,6 +72,10 @@ if [ "$MORE_GENOMES" ] ; then
     if [ "$dups" ] ; then
 	exit 1
     fi
+
+    cat ${MORE_GENOMES}/_metadata_.tsv \
+	>> ${GENOMES}/_metadata_.tsv
+
 fi
 
 # ------------------------------------------------------------------------
