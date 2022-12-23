@@ -10,9 +10,11 @@ CONDA_PREFIX=$(dirname $(dirname $(type -p conda)))
 PACKAGES=
 #PACKAGES+=" pip"
 
+PACKAGES+=" busco"
+PACKAGES+=" mashtree"
 PACKAGES+=" ncbi-datasets-cli"
 PACKAGES+=" prokka"
-PACKAGES+=" busco"
+PACKAGES+=" pyani"
 
 if [ "$(type -p mamba)" ] ; then
     _conda="mamba --no-banner"
@@ -20,12 +22,19 @@ else
     _conda=conda
 fi
 
-set -x
+function __ {
+    echo + "$@"
+    eval "$@"
+}
 
-conda env remove -y --name ${NAME}
-conda create -y --name ${NAME}
-conda activate ${NAME}
+if [ "$1" = -f ] ; then
+    __ conda env remove -y --name ${NAME}
+fi
+if [ ! -d ${CONDA_PREFIX}/envs/${NAME} ] ; then
+    __ conda create -y --name ${NAME}
+fi
+__ conda activate ${NAME}
 
-$_conda install -y ${PACKAGES}
+__ $_conda install -y ${PACKAGES}
 
-#pip install FIXME
+# __ pip install FIXME

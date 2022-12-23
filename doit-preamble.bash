@@ -99,4 +99,5 @@ PROKKA=${DATA}/3_prokka
 GENOMES=${DATA}/genomes
 BUSCO=${DATA}/5_busco
 MASHTREE=${DATA}/6_mashtree
-
+PYANI=${DATA}/7_pyani
+STATS=${DATA}/8_stats
