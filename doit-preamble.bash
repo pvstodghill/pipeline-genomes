@@ -98,4 +98,5 @@ RAW=${DATA}/2_raw
 PROKKA=${DATA}/3_prokka
 GENOMES=${DATA}/genomes
 BUSCO=${DATA}/5_busco
-FINAL=${DATA}/6_final
+MASHTREE=${DATA}/6_mashtree
+
