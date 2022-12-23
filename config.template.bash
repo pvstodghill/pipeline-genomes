@@ -10,6 +10,9 @@
 # NCBI_GENBANK_REFERENCE_ONLY=1
 # NCBI_ACCESSIONS=GCF_017474015.1 # P.ananatis OC5a
 
+# # Directory containing genomes to add
+# MORE_GENOMES=local
+
 # ------------------------------------------------------------------------
 
 GENOME_NAME_ARGS=
@@ -22,14 +25,11 @@ GENOME_NAME_ARGS+=" -D" # Drop older redundent assemblies heuristically
 # EXCLUDE_ACCESSIONS=
 # EXCLUDE_ACCESSIONS+=" GCF_002095545.1" # LMG_24248~
 
-# # Directory containing genomes to add
-#MORE_GENOMES=local
-
 # ------------------------------------------------------------------------
 
-# # Uncomment to reannotate with Prokka. Otherwise, use existing
-# # annotations.
-#FORCE_REANNOTATE=1
+# Uncomment to reannotate with Prokka. Otherwise, use existing
+# annotations.
+FORCE_REANNOTATE=1
 # # v-- You probably don't want to uncomment these. They have no effect.
 #PROKKA_GRAM=neg
 #PROKKA_GENUS=Pantoea
@@ -42,14 +42,12 @@ BUSCO_LINEAGE= # use --auto-lineage-prok
 
 # ------------------------------------------------------------------------
 
-# # crazy strict
-#FILTER_C_CUTOFF=99.8
-#FILTER_REQUIRED_LINEAGE=enterobacterales
-# pretty standard
-FILTER_C_CUTOFF=95.0
-# FILTER_MANUALLY= # strains to remove for one reason or another
-# FILTER_MANUALLY+=" Fix_me_st1"
-# FILTER_MANUALLY+=" Fix_me_st2"
+# Analyses for pyANI to perform
+PYANI_METHODS=
+# PYANI_METHODS+=" ANIb"
+PYANI_METHODS+=" ANIm"
+# PYANI_METHODS+=" ANIblastall"
+PYANI_METHODS+=" TETRA"
 
 # ------------------------------------------------------------------------
 
