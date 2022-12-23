@@ -28,9 +28,9 @@ fi
 
 # ------------------------------------------------------------------------
 
-for FNA in ${GENOMES}/*.fna ; do
+for FNA in ${RAW}/*.fna ; do
     ACCESSION=$(basename $FNA .fna)
-    if [ -e ${GENOMES}/$ACCESSION.faa -a -z "$FORCE_REANNOTATE" ] ; then
+    if [ -e ${RAW}/$ACCESSION.faa -a -z "$FORCE_REANNOTATE" ] ; then
 	continue
     fi
 
@@ -38,11 +38,11 @@ for FNA in ${GENOMES}/*.fna ; do
 
     OUTPUT=${PROKKA}/${ACCESSION}_prokka
 
-    if [ 1 != "$(grep '^'${ACCESSION} ${GENOMES}/_metadata_.tsv | wc -l)" ] ; then
+    if [ 1 != "$(grep '^'${ACCESSION} ${RAW}/_metadata_.tsv | wc -l)" ] ; then
 	echo 1>&2 "## failed to extract strainame for <<$ACCESSION>>"
 	exit 1
     fi
-    STRAIN="$(grep '^'${ACCESSION} ${GENOMES}/_metadata_.tsv | cut -f3 | sed -r -e 's/[ ]+//g')"
+    STRAIN="$(grep '^'${ACCESSION} ${RAW}/_metadata_.tsv | cut -f3 | sed -r -e 's/[ ]+//g')"
 
     prokka ${PROKKA_ARGS} \
 	   --outdir ${OUTPUT} \

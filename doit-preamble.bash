@@ -94,8 +94,8 @@ export LC_ALL=C
 # ------------------------------------------------------------------------
 
 DOWNLOADS=${DATA}/1_downloads
-GENOMES=${DATA}/2_genomes
+RAW=${DATA}/2_raw
 PROKKA=${DATA}/3_prokka
-PROTEOMES=${DATA}/4_proteomes
+GENOMES=${DATA}/genomes
 BUSCO=${DATA}/5_busco
 FINAL=${DATA}/6_final

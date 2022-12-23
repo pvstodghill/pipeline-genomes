@@ -2,8 +2,8 @@
 
 . $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
-rm -rf ${GENOMES}
-mkdir -p ${GENOMES}
+rm -rf ${RAW}
+mkdir -p ${RAW}
 
 # ------------------------------------------------------------------------
 # Collect the NCBI genomes
@@ -12,7 +12,7 @@ mkdir -p ${GENOMES}
 if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
 
     echo 1>&2 "# Unzip the NCBI genomes"
-    NCBI_TMP=${GENOMES}/ncbi_tmp
+    NCBI_TMP=${RAW}/ncbi_tmp
     mkdir ${NCBI_TMP}
     for z in ${DOWNLOADS}/ncbi_*.zip ; do
 	ncbi_xx=$(basename $z .zip)
@@ -32,9 +32,9 @@ if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
 	)
 	ls ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/*.fna \
 	    | grep -v '\(cds_from_genomic\|rna\)\.fna' \
-	    | xargs cat > ${GENOMES}/$accession.fna
+	    | xargs cat > ${RAW}/$accession.fna
 	if [ -e ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/protein.faa ] ; then
-	    cp ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/protein.faa ${GENOMES}/$accession.faa
+	    cp ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/protein.faa ${RAW}/$accession.faa
 	fi
     done
 
@@ -43,7 +43,7 @@ if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
 
     cat ${DOWNLOADS}/ncbi_*.jsonl \
 	| ${PIPELINE}/scripts/meta-data-from-assembly_data_report \
-	> ${GENOMES}/_metadata_.tsv
+	> ${RAW}/_metadata_.tsv
 
 fi
 
@@ -62,11 +62,11 @@ if [ "$MORE_GENOMES" ] ; then
 		exit 1
 	esac
 	ff=$(basename $f)
-	if [ -e ${GENOMES}/$ff ] ; then
-	    echo 1>&2 "Already exists: ${GENOMES}/$ff"
+	if [ -e ${RAW}/$ff ] ; then
+	    echo 1>&2 "Already exists: ${RAW}/$ff"
 	    dups=1
 	else
-	    cp $f ${GENOMES}/$ff
+	    cp $f ${RAW}/$ff
 	fi
     done
     if [ "$dups" ] ; then
@@ -74,7 +74,7 @@ if [ "$MORE_GENOMES" ] ; then
     fi
 
     cat ${MORE_GENOMES}/_metadata_.tsv \
-	>> ${GENOMES}/_metadata_.tsv
+	>> ${RAW}/_metadata_.tsv
 
 fi
 
