@@ -5,6 +5,9 @@
 rm -rf ${RAW}
 mkdir -p ${RAW}
 
+echo Accession$'\t'Organism$'\t'Strain$'\t'Level$'\t'Date \
+     > ${RAW}/_metadata_.tsv
+
 # ------------------------------------------------------------------------
 # Collect the NCBI genomes
 # ------------------------------------------------------------------------
@@ -43,7 +46,7 @@ if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
 
     cat ${DOWNLOADS}/ncbi_*.jsonl \
 	| ${PIPELINE}/scripts/meta-data-from-assembly_data_report \
-	> ${RAW}/_metadata_.tsv
+	>> ${RAW}/_metadata_.tsv
 
 fi
 
@@ -73,8 +76,13 @@ if [ "$MORE_GENOMES" ] ; then
 	exit 1
     fi
 
-    cat ${MORE_GENOMES}/_metadata_.tsv \
-	>> ${RAW}/_metadata_.tsv
+    if [ 1 = "$(head -n1 ${MORE_GENOMES}/_metadata_.tsv | grep '^Access' | wc -l)" ] ; then
+    	tail -n+1 ${MORE_GENOMES}/_metadata_.tsv \
+    	     >> ${RAW}/_metadata_.tsv
+    else
+	cat ${MORE_GENOMES}/_metadata_.tsv \
+	    >> ${RAW}/_metadata_.tsv
+    fi
 
 fi
 

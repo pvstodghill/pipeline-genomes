@@ -37,7 +37,7 @@ echo 1>&2 "# Generate summary"
 (
     cd ${BUSCO}
     
-    echo -e "Name\tdb\tC\tS\tD\tF\tM\tn"
+    echo -e "Accession\tdb\tC\tS\tD\tF\tM\tn"
     egrep '^'$'\t''C:' /dev/null output_*/short_summary.specific.*.txt \
 	| sed -r \
 	      -e 's/^output_//' \
