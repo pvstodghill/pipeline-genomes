@@ -29,14 +29,20 @@ fi
 # ------------------------------------------------------------------------
 
 for FNA in ${GENOMES}/*.fna ; do
-    STRAIN=$(basename $FNA .fna)
-    if [ -e ${GENOMES}/$STRAIN.faa -a -z "$FORCE_REANNOTATE" ] ; then
+    ACCESSION=$(basename $FNA .fna)
+    if [ -e ${GENOMES}/$ACCESSION.faa -a -z "$FORCE_REANNOTATE" ] ; then
 	continue
     fi
 
-    echo 1>&2 "# Running Prokka: $STRAIN"
+    echo 1>&2 "# Running Prokka: $ACCESSION"
 
-    OUTPUT=${PROKKA}/${STRAIN}_prokka
+    OUTPUT=${PROKKA}/${ACCESSION}_prokka
+
+    if [ 1 != "$(grep '^'${ACCESSION} ${GENOMES}/_metadata_.tsv | wc -l)" ] ; then
+	echo 1>&2 "## failed to extract strainame for <<$ACCESSION>>"
+	exit 1
+    fi
+    STRAIN="$(grep '^'${ACCESSION} ${GENOMES}/_metadata_.tsv | cut -f3 | sed -r -e 's/[ ]+//g')"
 
     prokka ${PROKKA_ARGS} \
 	   --outdir ${OUTPUT} \
@@ -44,13 +50,13 @@ for FNA in ${GENOMES}/*.fna ; do
 	   --locustag ${STRAIN}_prokka \
 	   ${FNA}
 
-    cp ${OUTPUT}/output.faa ${PROKKA}/${STRAIN}.faa
-    cp ${OUTPUT}/output.fna ${PROKKA}/${STRAIN}.fna
-    cp ${OUTPUT}/output.gff ${PROKKA}/${STRAIN}.gff+fna
-    # cp ${OUTPUT}/output.gbk ${PROKKA}/${STRAIN}.gbk
+    cp ${OUTPUT}/output.faa ${PROKKA}/${ACCESSION}.faa
+    cp ${OUTPUT}/output.fna ${PROKKA}/${ACCESSION}.fna
+    cp ${OUTPUT}/output.gff ${PROKKA}/${ACCESSION}.gff+fna
+    # cp ${OUTPUT}/output.gbk ${PROKKA}/${ACCESSION}.gbk
     # cat ${OUTPUT}/output.gff \
     # 	| sed -e '/^##FASTA/,$d' \
-    # 	> ${PROKKA}/${STRAIN}.gff
+    # 	> ${PROKKA}/${ACCESSION}.gff
 
 done
 
