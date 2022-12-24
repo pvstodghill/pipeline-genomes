@@ -8,14 +8,16 @@
 
 echo 1>&2 '# Running mashtree...'
 
-rm -rf ${MASHTREE}
+rm -rf ${MASHTREE} ${DATA}/mashtree.tsv
 mkdir -p ${MASHTREE}
 
 mashtree \
     --numcpus ${THREADS} \
-    --outmatrix ${MASHTREE}/matrix.tsv \
-    --outtree ${MASHTREE}/tree.phy \
+    --outmatrix ${MASHTREE}/mashtree.tsv \
+    --outtree ${MASHTREE}/mashtree.tsv \
     ${GENOMES}/*.fna \
+
+cp --archive ${MASHTREE}/mashtree.tsv ${DATA}
 
 # ------------------------------------------------------------------------
 # Done.

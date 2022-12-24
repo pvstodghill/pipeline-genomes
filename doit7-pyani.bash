@@ -8,8 +8,9 @@
 
 echo 1>&2 '# Running pyani...'
 
-rm -rf ${PYANI}
+rm -rf ${PYANI} ${DATA}/*_percentage_identity.tab ${DATA}/TETRA_correlations.tab
 mkdir -p ${PYANI}
+
 
 for METHOD in ${PYANI_METHODS} ; do
     echo "## ${METHOD}"
@@ -20,6 +21,20 @@ for METHOD in ${PYANI_METHODS} ; do
 	  --outdir ${PYANI}/${METHOD} \
 	  --graphics \
 	  --workers ${THREADS}
+done
+
+for METHOD in ${PYANI_METHODS} ; do
+    case ${METHOD} in
+	ANI*)
+	    cp --archive ${PYANI}/${METHOD}/${METHOD}_percentage_identity.tab ${DATA}
+	    ;;
+	TETRA)
+	    cp --archive ${PYANI}/${METHOD}/${METHOD}_correlations.tab ${DATA}
+	    ;;
+	*)
+	    echo 1>&2 "Unexpected method: $METHOD"
+	    exit 1
+    esac
 done
 
 
