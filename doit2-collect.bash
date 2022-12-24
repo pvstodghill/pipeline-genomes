@@ -77,7 +77,7 @@ if [ "$MORE_GENOMES" ] ; then
     fi
 
     if [ 1 = "$(head -n1 ${MORE_GENOMES}/_metadata_.tsv | grep '^Access' | wc -l)" ] ; then
-    	tail -n+1 ${MORE_GENOMES}/_metadata_.tsv \
+    	tail -n+2 ${MORE_GENOMES}/_metadata_.tsv \
     	     >> ${RAW}/_metadata_.tsv
     else
 	cat ${MORE_GENOMES}/_metadata_.tsv \
