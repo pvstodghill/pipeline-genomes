@@ -5,7 +5,7 @@
 rm -rf ${RAW}
 mkdir -p ${RAW}
 
-echo Accession$'\t'Organism$'\t'Strain$'\t'Level$'\t'Date \
+echo Accession$'\t'Source$'\t'Organism$'\t'Strain$'\t'Level$'\t'Date \
      > ${RAW}/_metadata_.tsv
 
 # ------------------------------------------------------------------------
@@ -78,7 +78,7 @@ if [ "$MORE_GENOMES" ] ; then
 
     if [ 1 = "$(head -n1 ${MORE_GENOMES}/_metadata_.tsv | grep '^Access' | wc -l)" ] ; then
     	tail -n+2 ${MORE_GENOMES}/_metadata_.tsv \
-    	     >> ${RAW}/_metadata_.tsv
+	     >> ${RAW}/_metadata_.tsv
     else
 	cat ${MORE_GENOMES}/_metadata_.tsv \
 	    >> ${RAW}/_metadata_.tsv
