@@ -6,7 +6,7 @@ rm -rf ${RAW}
 mkdir -p ${RAW}
 
 echo Accession$'\t'Source$'\t'Organism$'\t'Strain$'\t'Level$'\t'Date \
-     > ${RAW}/_metadata_.tsv
+     > ${RAW}/_metadata_.tmp.tsv
 
 # ------------------------------------------------------------------------
 # Collect the NCBI genomes
@@ -46,7 +46,7 @@ if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
 
     cat ${DOWNLOADS}/ncbi_*.jsonl \
 	| ${PIPELINE}/scripts/meta-data-from-assembly_data_report \
-	>> ${RAW}/_metadata_.tsv
+	>> ${RAW}/_metadata_.tmp.tsv
 
 fi
 
@@ -78,13 +78,41 @@ if [ "$MORE_GENOMES" ] ; then
 
     if [ 1 = "$(head -n1 ${MORE_GENOMES}/_metadata_.tsv | grep '^Access' | wc -l)" ] ; then
     	tail -n+2 ${MORE_GENOMES}/_metadata_.tsv \
-	     >> ${RAW}/_metadata_.tsv
+	     >> ${RAW}/_metadata_.tmp.tsv
     else
 	cat ${MORE_GENOMES}/_metadata_.tsv \
-	    >> ${RAW}/_metadata_.tsv
+	    >> ${RAW}/_metadata_.tmp.tsv
     fi
 
 fi
+
+# ------------------------------------------------------------------------
+# Rename everthing according to metadata
+# ------------------------------------------------------------------------
+
+cat ${RAW}/_metadata_.tmp.tsv \
+    | ${PIPELINE}/scripts/make-filenames-from-metadata \
+		 ${COLLECT_EXCLUDE} ${COLLECT_ABBREVS} \
+		 > ${RAW}/_metadata_.tsv
+rm -f ${RAW}/_metadata_.tmp.tsv
+
+cd ${RAW}
+cat _metadata_.tsv | \
+    (
+	while read -a accession_fname ; do
+	    accession=${accession_fname[0]}
+	    fname=${accession_fname[1]}
+	    echo 1>&2 "## $accession -> $fname"
+	    for ext in fna faa ; do
+		if [ -e ${accession}.${ext} ] ; then
+		    if [ -e ${fname}.${ext} ] ; then
+			echo 1>&2 "${fname}.fna already exists."
+		    fi
+		    mv ${accession}.${ext} ${fname}.${ext}
+		fi
+	    done
+	done
+    )
 
 # ------------------------------------------------------------------------
 # Done.
