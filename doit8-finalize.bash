@@ -29,7 +29,14 @@ ${PIPELINE}/scripts/my-join \
 	   ${RAW}/_metadata_.tsv \
 	   ${STATS}/stats.tsv \
 	   ${BUSCO}/__report__.txt \
-	   > ${DATA}/metadata.tsv
+	   > ${DATA}/metadata.tmp.tsv
+
+(
+    grep '^Accession' ${DATA}/metadata.tmp.tsv
+    grep -v '^Accession' ${DATA}/metadata.tmp.tsv
+) > ${DATA}/metadata.tsv
+rm -f ${DATA}/metadata.tmp.tsv
+
 
 # ------------------------------------------------------------------------
 # Done.
