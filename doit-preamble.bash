@@ -95,9 +95,9 @@ export LC_ALL=C
 
 DOWNLOADS=${DATA}/1_downloads
 RAW=${DATA}/2_raw
-PROKKA=${DATA}/3_prokka
+MASHTREE=${DATA}/3_mashtree
+PROKKA=${DATA}/4_prokka
 GENOMES=${DATA}/genomes
-BUSCO=${DATA}/5_busco
-MASHTREE=${DATA}/6_mashtree
+BUSCO=${DATA}/6_busco
 PYANI=${DATA}/7_pyani
 STATS=${DATA}/8_stats

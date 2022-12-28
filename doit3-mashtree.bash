@@ -17,7 +17,7 @@ mashtree \
     --outtree ${MASHTREE}/mashtree.dnd \
     --mindepth 0 \
     --tempdir ${MASHTREE}/tmp \
-    ${GENOMES}/*.fna \
+    ${RAW}/*.fna \
 
 mashtree_cluster.pl \
     --threshold 0.05 \
