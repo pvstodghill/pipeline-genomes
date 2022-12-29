@@ -16,13 +16,13 @@ else
 fi
 
 for FAA in ${GENOMES}/*.faa ; do
-    ACCESSION=$(basename $FAA .faa)
-    echo 1>&2 "# Running BUSCO: $ACCESSION"
+    FNAME=$(basename $FAA .faa)
+    echo 1>&2 "# Running BUSCO: $FNAME"
 
     busco \
 		     -q \
 		     -i ${FAA} \
-		     -o ${BUSCO}/output_${ACCESSION} \
+		     -o ${BUSCO}/output_${FNAME} \
 		     -m proteins \
 		     ${LINEAGE_ARG} \
 		     -c ${THREADS} \
