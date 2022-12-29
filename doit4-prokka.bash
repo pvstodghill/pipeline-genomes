@@ -29,26 +29,26 @@ PROKKA_ARGS+=" --cpus ${THREADS}"
 # ------------------------------------------------------------------------
 
 cat ${RAW}/_metadata_.tsv | (
-    while IFS=$'\t' read ACCESSION FNAME SOURCE ORGANISM STRAIN LEVEL DATE ; do
+    while IFS=$'\t' read NAME ACCESSION SOURCE ORGANISM STRAIN LEVEL DATE ; do
 
-	if [ "${ACCESSION}" = "Accession" ] ; then
+	if [ "${NAME}" = "Name" ] ; then
 	    continue
 	fi
-	if [ -e "${RAW}/${FNAME}.faa" -a -z "$FORCE_REANNOTATE" ] ; then
+	if [ -e "${RAW}/${NAME}.faa" -a -z "$FORCE_REANNOTATE" ] ; then
 	    continue
 	fi
 
 	SAFE_STRAIN="$(echo "$STRAIN" | sed -r -e 's/[^A-Za-z0-9_-]+//g')"
 
-	echo 1>&2 "# Running Prokka: $FNAME"
+	echo 1>&2 "# Running Prokka: $NAME"
 
-	OUTPUT=${PROKKA}/${FNAME}_prokka
+	OUTPUT=${PROKKA}/${NAME}_prokka
 
 	prokka ${PROKKA_ARGS} \
 	     --outdir ${OUTPUT} \
 	     --strain ${SAFE_STRAIN} \
 	     --locustag ${SAFE_STRAIN}_prokka \
-	     ${RAW}/${FNAME}.fna
+	     ${RAW}/${NAME}.fna
 
     done
 )

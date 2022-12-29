@@ -99,20 +99,20 @@ rm -f ${RAW}/_metadata_.tmp.tsv
 cd ${RAW}
 cat _metadata_.tsv | \
     (
-	while IFS=$'\t' read ACCESSION FNAME IGNORED ; do
-	    if [ "${ACCESSION}" = Accession ] ; then
+	while IFS=$'\t' read NAME ACCESSION IGNORED ; do
+	    if [ "${NAME}" = Name ] ; then
 		continue
 	    fi
-	    if [ "${ACCESSION}" = "${FNAME}" ] ; then
+	    if [ "${ACCESSION}" = "${NAME}" ] ; then
 		echo 1>&2 "## ${ACCESSION} unchanged"
 	    else
-		echo 1>&2 "## ${ACCESSION} -> ${FNAME}"
+		echo 1>&2 "## ${NAME} <- ${ACCESSION}"
 		for ext in fna faa ; do
 		    if [ -e ${ACCESSION}.${ext} ] ; then
-			if [ -e ${FNAME}.${ext} ] ; then
-			    echo 1>&2 "${FNAME}.fna already exists."
+			if [ -e ${NAME}.${ext} ] ; then
+			    echo 1>&2 "${NAME}.fna already exists."
 			fi
-			mv "${ACCESSION}.${ext}" "${FNAME}.${ext}"
+			mv "${ACCESSION}.${ext}" "${NAME}.${ext}"
 		    fi
 		done
 	    fi
