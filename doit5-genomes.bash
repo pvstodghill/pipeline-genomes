@@ -11,19 +11,23 @@ echo 1>&2 "# Collect genome files"
 rm -rf ${GENOMES}
 mkdir -p ${GENOMES}
 
-for FNA in ${RAW}/*.fna ; do
-    ACCESSION=$(basename $FNA .fna)
-    for EXT in fna faa gff+fna ; do
-	if [ -e ${PROKKA}/${ACCESSION}.${EXT} ] ; then
-	    cp ${PROKKA}/${ACCESSION}.${EXT} ${GENOMES}/${ACCESSION}.${EXT}
-	elif [ -e ${RAW}/${ACCESSION}.${EXT} ] ; then
-	    cp ${RAW}/${ACCESSION}.${EXT} ${GENOMES}/${ACCESSION}.${EXT}
-	else
-	    echo 1>&2 "Cannot find: ${ACCESSION}.${EXT}"
-	    exit 1
+cat ${RAW}/_metadata_.tsv | (
+    while IFS=$'\t' read ACCESSION FNAME SOURCE ORGANISM STRAIN LEVEL DATE ; do
+	if [ "${ACCESSION}" = "Accession" ] ; then
+	    continue
 	fi
+	for EXT in fna faa gff ; do
+	    if [ -e ${PROKKA}/${FNAME}_prokka/output.${EXT} ] ; then
+		cp ${PROKKA}/${FNAME}_prokka/output.${EXT} ${GENOMES}/${FNAME}.${EXT}
+	    elif [ -e ${RAW}/${FNAME}.${EXT} ] ; then
+		cp ${RAW}/${FNAME}.${EXT} ${GENOMES}/${FNAME}.${EXT}
+	    else
+		echo 1>&2 "Cannot find: ${FNAME}.${EXT}"
+		exit 1
+	    fi
+	done
     done
-done
+)
 
 
 # ------------------------------------------------------------------------
