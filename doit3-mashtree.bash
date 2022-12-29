@@ -27,6 +27,7 @@ mashtree_cluster.pl \
 
 
 cp --archive ${MASHTREE}/mashtree.tsv ${DATA}
+cp --archive ${MASHTREE}/clusters.txt ${DATA}
 
 # ------------------------------------------------------------------------
 # Done.
