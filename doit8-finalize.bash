@@ -14,10 +14,18 @@ mkdir -p ${STATS}
 echo Accession$'\t'Seqs$'\t'Bases$'\t'Median$'\t'Mean$'\t'N50$'\t'L50$'\t'Min$'\t'Max > ${STATS}/stats.tsv
 
 
-for FNA in ${GENOMES}/*.fna ; do
-    ACCESSION=$(basename $FNA .fna)
-    cat $FNA | ${PIPELINE}/scripts/fastx2stats -t $ACCESSION -a -s -d$'\t' >> ${STATS}/stats.tsv
-done
+cat ${RAW}/_metadata_.tsv | (
+    while IFS=$'\t' read ACCESSION FNAME SOURCE ORGANISM STRAIN LEVEL DATE ; do
+	if [ "${ACCESSION}" = "Accession" ] ; then
+	    continue
+	fi
+
+	
+	cat ${GENOMES}/${FNAME}.fna \
+	    | ${PIPELINE}/scripts/fastx2stats -t $ACCESSION -a -s -d$'\t' \
+			 >> ${STATS}/stats.tsv
+    done
+)
 
 # ------------------------------------------------------------------------
 # Generating metadata file...
