@@ -11,7 +11,6 @@ mkdir -p ${PROKKA}
 
 PROKKA_ARGS=
 PROKKA_ARGS+=" --prefix output"
-PROKKA_ARGS+=" --cpus ${THREADS}"
 PROKKA_ARGS+=" --quiet"
 # requires signalp
 # if [ "$PROKKA_GRAM" ] ; then
@@ -23,42 +22,36 @@ fi
 if [ "$PROKKA_SPECIES" ] ; then
     PROKKA_ARGS+=" --species ${PROKKA_SPECIES}"
 fi
+PROKKA_ARGS+=" --compliant" # for Panaroo
 # PROKKA_ARGS+=" --rfam"
-# PROKKA_ARGS+=" --addgenes"
+PROKKA_ARGS+=" --cpus ${THREADS}"
 
 # ------------------------------------------------------------------------
 
-for FNA in ${RAW}/*.fna ; do
-    ACCESSION=$(basename $FNA .fna)
-    if [ -e ${RAW}/$ACCESSION.faa -a -z "$FORCE_REANNOTATE" ] ; then
-	continue
-    fi
+cat ${RAW}/_metadata_.tsv | (
+    while IFS=$'\t' read ACCESSION FNAME SOURCE ORGANISM STRAIN LEVEL DATE ; do
 
-    echo 1>&2 "# Running Prokka: $ACCESSION"
+	if [ "${ACCESSION}" = "Accession" ] ; then
+	    continue
+	fi
+	if [ -e "${RAW}/${FNAME}.faa" -a -z "$FORCE_REANNOTATE" ] ; then
+	    continue
+	fi
 
-    OUTPUT=${PROKKA}/${ACCESSION}_prokka
+	SAFE_STRAIN="$(echo "$STRAIN" | sed -r -e 's/[^A-Za-z0-9_-]+//g')"
 
-    if [ 1 != "$(grep '^'${ACCESSION} ${RAW}/_metadata_.tsv | wc -l)" ] ; then
-	echo 1>&2 "## failed to extract strainame for <<$ACCESSION>>"
-	exit 1
-    fi
-    STRAIN="$(grep '^'${ACCESSION} ${RAW}/_metadata_.tsv | cut -f3 | sed -r -e 's/[ ]+//g')"
+	echo 1>&2 "# Running Prokka: $FNAME"
 
-    prokka ${PROKKA_ARGS} \
-	   --outdir ${OUTPUT} \
-	   --strain ${STRAIN} \
-	   --locustag ${STRAIN}_prokka \
-	   ${FNA}
+	OUTPUT=${PROKKA}/${FNAME}_prokka
 
-    cp ${OUTPUT}/output.faa ${PROKKA}/${ACCESSION}.faa
-    cp ${OUTPUT}/output.fna ${PROKKA}/${ACCESSION}.fna
-    cp ${OUTPUT}/output.gff ${PROKKA}/${ACCESSION}.gff+fna
-    # cp ${OUTPUT}/output.gbk ${PROKKA}/${ACCESSION}.gbk
-    # cat ${OUTPUT}/output.gff \
-    # 	| sed -e '/^##FASTA/,$d' \
-    # 	> ${PROKKA}/${ACCESSION}.gff
+	prokka ${PROKKA_ARGS} \
+	     --outdir ${OUTPUT} \
+	     --strain ${SAFE_STRAIN} \
+	     --locustag ${SAFE_STRAIN}_prokka \
+	     ${RAW}/${FNAME}.fna
 
-done
+    done
+)
 
 # ------------------------------------------------------------------------
 # Done.
