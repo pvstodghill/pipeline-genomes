@@ -92,25 +92,30 @@ fi
 
 cat ${RAW}/_metadata_.tmp.tsv \
     | ${PIPELINE}/scripts/make-filenames-from-metadata \
-		 ${COLLECT_EXCLUDE} ${COLLECT_ABBREVS} \
+		 -a ${COLLECT_EXCLUDE} ${COLLECT_ABBREVS} \
 		 > ${RAW}/_metadata_.tsv
 rm -f ${RAW}/_metadata_.tmp.tsv
 
 cd ${RAW}
 cat _metadata_.tsv | \
     (
-	while read -a accession_fname ; do
-	    accession=${accession_fname[0]}
-	    fname=${accession_fname[1]}
-	    echo 1>&2 "## $accession -> $fname"
-	    for ext in fna faa ; do
-		if [ -e ${accession}.${ext} ] ; then
-		    if [ -e ${fname}.${ext} ] ; then
-			echo 1>&2 "${fname}.fna already exists."
+	while IFS=$'\t' read ACCESSION FNAME IGNORED ; do
+	    if [ "${ACCESSION}" = Accession ] ; then
+		continue
+	    fi
+	    if [ "${ACCESSION}" = "${FNAME}" ] ; then
+		echo 1>&2 "## ${ACCESSION} unchanged"
+	    else
+		echo 1>&2 "## ${ACCESSION} -> ${FNAME}"
+		for ext in fna faa ; do
+		    if [ -e ${ACCESSION}.${ext} ] ; then
+			if [ -e ${FNAME}.${ext} ] ; then
+			    echo 1>&2 "${FNAME}.fna already exists."
+			fi
+			mv "${ACCESSION}.${ext}" "${FNAME}.${ext}"
 		    fi
-		    mv ${accession}.${ext} ${fname}.${ext}
-		fi
-	    done
+		done
+	    fi
 	done
     )
 
