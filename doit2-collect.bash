@@ -45,7 +45,7 @@ if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
     rm -rf ${NCBI_TMP}
 
     cat ${DOWNLOADS}/ncbi_*.jsonl \
-	| ${PIPELINE}/scripts/meta-data-from-assembly_data_report \
+	| ${PIPELINE}/scripts/datasets-json2tsv \
 	>> ${RAW}/_metadata_.tmp.tsv
 
 fi
