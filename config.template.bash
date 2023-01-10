@@ -2,6 +2,9 @@
 #DATA=.
 #DATA=data # default
 
+# Allow steps to restart after an error (is fixed).
+PIPELINE_RESTART=1
+
 # ------------------------------------------------------------------------
 
 # NCBI_REFSEQ_TAXONS=574096 # P.allii

@@ -2,7 +2,9 @@
 
 . $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
-rm -rf ${PROKKA}
+if [ -z "${PIPELINE_RESTART}" ] ; then
+    rm -rf ${PROKKA}
+fi
 mkdir -p ${PROKKA}
 
 # ------------------------------------------------------------------------
