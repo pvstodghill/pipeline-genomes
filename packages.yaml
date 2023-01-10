@@ -2,11 +2,31 @@
 # https://bioconda.github.io/recipes/busco/README.html
 ---
 image: pvstodghill/busco
-version: 5.4.2__2022-09-08
+version: 5.4.4__2023-01-08
 commands:
   - busco
   - generate_plot.py
 
+# https://www.ncbi.nlm.nih.gov/datasets
+# https://anaconda.org/conda-forge/ncbi-datasets-cli
+---
+image: pvstodghill/ncbi-datasets-cli
+version: 14.6.5__2023-01-08
+commands:
+  - dataformat
+  - datasets
+
+# https://github.com/lskatz/mashtree
+# https://bioconda.github.io/recipes/mashtree/README.html
+---
+image: pvstodghill/mashtree
+version: 1.2.0__2023-01-09
+commands:
+  - mashtree
+  - mashtree_bootstrap.pl
+  - mashtree_cluster.pl
+  - mashtree_jackknife.pl
+      
 # https://github.com/tseemann/prokka
 ---
 image: pvstodghill/prokka
@@ -24,4 +44,14 @@ commands:
   - prokka-make_tarball
   - prokka-tigrfams_to_hmm
   - prokka-uniprot_to_fasta_db
+
+# http://widdowquinn.github.io/pyani/
+# https://bioconda.github.io/recipes/pyani/README.html
+---
+image: pvstodghill/pyani
+version: 0.2.12__2022-09-15
+commands:
+  - average_nucleotide_identity.py
+  - delta_filter_wrapper.py
+  - genbank_get_genomes_by_taxon.py
 

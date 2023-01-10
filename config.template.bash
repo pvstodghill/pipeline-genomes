@@ -54,12 +54,12 @@ PYANI_METHODS+=" TETRA"
 
 # ------------------------------------------------------------------------
 
-# # Uncomment to get packages from HOWTO
-# PACKAGES_FROM=howto
+# Uncomment to get packages from HOWTO
+PACKAGES_FROM=howto
 
-# uncomment to use conda
-PACKAGES_FROM=conda
-CONDA_ENV=pipeline-genomes
+# # Uncomment to use conda
+# PACKAGES_FROM=conda
+# CONDA_ENV=pipeline-genomes
 
 #THREADS=$(nproc --all)
 
