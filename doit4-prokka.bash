@@ -41,16 +41,24 @@ cat ${RAW}/_metadata_.tsv | (
 	fi
 
 	SAFE_STRAIN="$(echo "$STRAIN" | sed -r -e 's/[^A-Za-z0-9_-]+//g')"
-
-	echo 1>&2 "# Running Prokka: $NAME"
+	SAFE_ACCESSION="$(echo "$ACCESSION" | sed -r -e 's/[^A-Za-z0-9_.-]+//g')"
 
 	OUTPUT=${PROKKA}/${NAME}_prokka
+
+	if [ -e ${OUTPUT}/output.gbk ] ; then
+	    echo 1>&2 "# Skipping: $NAME"
+	    continue
+	fi
+
+	echo 1>&2 "# Running Prokka: $NAME"
+	rm -rf ${OUTPUT}
 
 	prokka ${PROKKA_ARGS} \
 	     --outdir ${OUTPUT} \
 	     --strain ${SAFE_STRAIN} \
-	     --locustag ${SAFE_STRAIN}_prokka \
 	     ${RAW}/${NAME}.fna
+
+	# --locustag ${SAFE_ACCESSION}_prokka
 
     done
 )
