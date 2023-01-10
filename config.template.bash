@@ -23,7 +23,7 @@ GENOME_NAME_ARGS=
 # GENOME_NAME_ARGS+=" -a" # Remove non-alphabetic chars from genome names
 # GENOME_NAME_ARGS+=" -u" # Make genome names uppercase
 # GENOME_NAME_ARGS+=" -d" # Throw error if dup names detected
-GENOME_NAME_ARGS+=" -D" # Drop older redundent assemblies heuristically
+GENOME_NAME_ARGS+=" -D" # Mark older redundent assemblies heuristically
 
 # EXCLUDE_ACCESSIONS=
 # EXCLUDE_ACCESSIONS+=" GCF_002095545.1" # LMG_24248~
@@ -40,8 +40,8 @@ FORCE_REANNOTATE=1
 
 # ------------------------------------------------------------------------
 
-BUSCO_LINEAGE= # use --auto-lineage-prok
-#BUSCO_LINEAGE=enterobacterales_odb10
+#BUSCO_LINEAGE= # use --auto-lineage-prok
+BUSCO_LINEAGE=FIXME
 
 # ------------------------------------------------------------------------
 
