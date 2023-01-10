@@ -5,8 +5,8 @@
 rm -rf ${RAW}
 mkdir -p ${RAW}
 
-echo Accession$'\t'Source$'\t'Organism$'\t'Strain$'\t'Level$'\t'Date \
-     > ${RAW}/_metadata_.tmp.tsv
+${PIPELINE}/scripts/fix-genomes-metadata -H \
+	   > ${RAW}/_metadata_.tmp.tsv
 
 # ------------------------------------------------------------------------
 # Collect the NCBI genomes
@@ -46,7 +46,8 @@ if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
 
     cat ${DOWNLOADS}/ncbi_*.jsonl \
 	| ${PIPELINE}/scripts/datasets-json2tsv \
-	>> ${RAW}/_metadata_.tmp.tsv
+	| ${PIPELINE}/scripts/fix-genomes-metadata -n \
+		     >> ${RAW}/_metadata_.tmp.tsv
 
 fi
 
@@ -76,14 +77,9 @@ if [ "$MORE_GENOMES" ] ; then
 	exit 1
     fi
 
-    if [ 1 = "$(head -n1 ${MORE_GENOMES}/_metadata_.tsv | grep '^Access' | wc -l)" ] ; then
-    	tail -n+2 ${MORE_GENOMES}/_metadata_.tsv \
-	     >> ${RAW}/_metadata_.tmp.tsv
-    else
-	cat ${MORE_GENOMES}/_metadata_.tsv \
-	    >> ${RAW}/_metadata_.tmp.tsv
-    fi
-
+    cat ${MORE_GENOMES}/_metadata_.tsv \
+    	| ${PIPELINE}/scripts/fix-genomes-metadata -n \
+		     >> ${RAW}/_metadata_.tmp.tsv
 fi
 
 # ------------------------------------------------------------------------
