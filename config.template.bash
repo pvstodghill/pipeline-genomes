@@ -3,7 +3,7 @@
 #DATA=data # default
 
 # Allow steps to restart after an error (is fixed).
-PIPELINE_RESTART=1
+#PIPELINE_RESTART=1
 
 # ------------------------------------------------------------------------
 
