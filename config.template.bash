@@ -25,8 +25,15 @@ GENOME_NAME_ARGS=
 # GENOME_NAME_ARGS+=" -d" # Throw error if dup names detected
 GENOME_NAME_ARGS+=" -D" # Mark older redundent assemblies heuristically
 
-# EXCLUDE_ACCESSIONS=
-# EXCLUDE_ACCESSIONS+=" GCF_002095545.1" # LMG_24248~
+# ------------------------------------------------------------------------
+
+# COLLECT_EXCLUDE= # accessions to exclude
+
+# COLLECT_ABBREVS=
+# COLLECT_ABBREVS+=" =Pantoea_agglomerans_pv_gypsophilae_"
+# COLLECT_ABBREVS+=" =Pantoea_agglomerans_pv_betae_"
+# COLLECT_ABBREVS+=" =Pantoea_agglomerans_"
+# COLLECT_ABBREVS+=" Peu_=Pantoea_eucalypti_"
 
 # ------------------------------------------------------------------------
 
