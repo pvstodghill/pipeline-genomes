@@ -31,32 +31,32 @@ PROKKA_ARGS+=" --cpus ${THREADS}"
 # ------------------------------------------------------------------------
 
 cat ${RAW}/_metadata_.tsv | (
-    while IFS=$'\t' read NAME ACCESSION SOURCE ORGANISM STRAIN LEVEL DATE ; do
+    while IFS=$'\t' read ACCESSION SOURCE ORGANISM STRAIN LEVEL DATE ; do
 
-	if [ "${NAME}" = "Name" ] ; then
+	if [ "${ACCESSION}" = "Accession" ] ; then
 	    continue
 	fi
-	if [ -e "${RAW}/${NAME}.faa" -a -z "$FORCE_REANNOTATE" ] ; then
+	if [ -e "${RAW}/${ACCESSION}.faa" -a -z "$FORCE_REANNOTATE" ] ; then
 	    continue
 	fi
 
 	SAFE_STRAIN="$(echo "$STRAIN" | sed -r -e 's/[^A-Za-z0-9_-]+//g')"
 	SAFE_ACCESSION="$(echo "$ACCESSION" | sed -r -e 's/[^A-Za-z0-9_.-]+//g')"
 
-	OUTPUT=${PROKKA}/${NAME}_prokka
+	OUTPUT=${PROKKA}/${ACCESSION}_prokka
 
 	if [ -e ${OUTPUT}/output.gbk ] ; then
-	    echo 1>&2 "# Skipping: $NAME"
+	    echo 1>&2 "# Skipping: $ACCESSION ($ORGANISM $STRAIN)"
 	    continue
 	fi
 
-	echo 1>&2 "# Running Prokka: $NAME"
+	echo 1>&2 "# Running Prokka: $ACCESSION ($ORGANISM $STRAIN)"
 	rm -rf ${OUTPUT}
 
 	prokka ${PROKKA_ARGS} \
 	     --outdir ${OUTPUT} \
 	     --strain ${SAFE_STRAIN} \
-	     ${RAW}/${NAME}.fna
+	     ${RAW}/${ACCESSION}.fna
 
 	# --locustag ${SAFE_ACCESSION}_prokka
 
