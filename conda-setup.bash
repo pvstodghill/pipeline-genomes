@@ -13,7 +13,6 @@ PACKAGES=
 PACKAGES+=" busco"
 PACKAGES+=" ncbi-datasets-cli"
 PACKAGES+=" prokka"
-PACKAGES+=" pyani"
 
 if [ "$(type -p mamba)" ] ; then
     _conda="mamba --no-banner"

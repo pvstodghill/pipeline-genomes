@@ -52,15 +52,6 @@ BUSCO_LINEAGE=FIXME
 
 # ------------------------------------------------------------------------
 
-# Analyses for pyANI to perform
-PYANI_METHODS=
-# PYANI_METHODS+=" ANIb"
-PYANI_METHODS+=" ANIm"
-# PYANI_METHODS+=" ANIblastall"
-PYANI_METHODS+=" TETRA"
-
-# ------------------------------------------------------------------------
-
 # Uncomment to get packages from HOWTO
 PACKAGES_FROM=howto
 
