@@ -16,7 +16,7 @@ COMMON_ARGS=""
 COMMON_ARGS+=" --no-progressbar"
 COMMON_ARGS+=" --include genome,seq-report"
 if [ -z "$FORCE_REANNOTATE" ] ; then
-    COMMON_ARGS+=",protein,gtf,gbff"
+    COMMON_ARGS+=",protein,gff3,gtf,gbff"
 fi
 
 REFSEQ_ARGS="--assembly-source refseq"

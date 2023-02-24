@@ -36,6 +36,9 @@ if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
 	ls ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/*.fna \
 	    | grep -v '\(cds_from_genomic\|rna\)\.fna' \
 	    | xargs cat > ${RAW}/$accession.fna
+	if [ -e ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/genomic.gff ] ; then
+	    cp ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/genomic.gff ${RAW}/$accession.gff
+	fi
 	if [ -e ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/protein.faa ] ; then
 	    cp ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/$accession/protein.faa ${RAW}/$accession.faa
 	fi
@@ -60,7 +63,7 @@ if [ "$MORE_GENOMES" ] ; then
     echo 1>&2 "# Collect the local genomes"
     for f in $MORE_GENOMES/*.f?a ; do
 	case "$f" in
-	    *.fna|*.faa) : ok ;;
+	    *.fna|*.faa|*.gff) : ok ;;
 	    *)
 		echo 1>&2 "Unknown local genome type: $f"
 		exit 1
@@ -103,7 +106,7 @@ cat _metadata_.tsv | \
 		echo 1>&2 "## ${ACCESSION} unchanged"
 	    else
 		echo 1>&2 "## ${NAME} <- ${ACCESSION}"
-		for ext in fna faa ; do
+		for ext in fna faa gff ; do
 		    if [ -e ${ACCESSION}.${ext} ] ; then
 			if [ -e ${NAME}.${ext} ] ; then
 			    echo 1>&2 "${NAME}.fna already exists."
