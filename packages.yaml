@@ -16,17 +16,6 @@ commands:
   - dataformat
   - datasets
 
-# https://github.com/lskatz/mashtree
-# https://bioconda.github.io/recipes/mashtree/README.html
----
-image: pvstodghill/mashtree
-version: 1.2.0__2023-01-09
-commands:
-  - mashtree
-  - mashtree_bootstrap.pl
-  - mashtree_cluster.pl
-  - mashtree_jackknife.pl
-      
 # https://github.com/tseemann/prokka
 ---
 image: pvstodghill/prokka

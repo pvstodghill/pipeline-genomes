@@ -11,7 +11,6 @@ PACKAGES=
 #PACKAGES+=" pip"
 
 PACKAGES+=" busco"
-PACKAGES+=" mashtree"
 PACKAGES+=" ncbi-datasets-cli"
 PACKAGES+=" prokka"
 PACKAGES+=" pyani"
