@@ -98,4 +98,4 @@ RAW=${DATA}/2_raw
 PROKKA=${DATA}/3_prokka
 GENOMES=${DATA}/genomes
 BUSCO=${DATA}/5_busco
-STATS=${DATA}/8_stats
+STATS=${DATA}/6_stats

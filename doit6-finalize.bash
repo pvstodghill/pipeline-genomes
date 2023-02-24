@@ -11,18 +11,18 @@ echo 1>&2 '# Generating stats...'
 rm -rf ${STATS}
 mkdir -p ${STATS}
 
-echo Name$'\t'Seqs$'\t'Bases$'\t'Median$'\t'Mean$'\t'N50$'\t'L50$'\t'Min$'\t'Max \
+echo Accession$'\t'Seqs$'\t'Bases$'\t'Median$'\t'Mean$'\t'N50$'\t'L50$'\t'Min$'\t'Max \
      > ${STATS}/stats.tsv
 
 
 cat ${RAW}/_metadata_.tsv | (
-    while IFS=$'\t' read NAME IGNORED ; do
-	if [ "${NAME}" = "Name" ] ; then
+    while IFS=$'\t' read ACCESSION IGNORED ; do
+	if [ "${ACCESSION}" = "Accession" ] ; then
 	    continue
 	fi
 	
-	cat ${GENOMES}/${NAME}.fna \
-	    | ${PIPELINE}/scripts/fastx2stats -t ${NAME} -a -s -d$'\t' \
+	cat ${GENOMES}/${ACCESSION}.fna \
+	    | ${PIPELINE}/scripts/fastx2stats -t ${ACCESSION} -a -s -d$'\t' \
 			 >> ${STATS}/stats.tsv
     done
 )
@@ -40,8 +40,8 @@ ${PIPELINE}/scripts/my-join \
 	   > ${DATA}/metadata.tmp.tsv
 
 (
-    grep '^Name' ${DATA}/metadata.tmp.tsv
-    grep -v '^Name' ${DATA}/metadata.tmp.tsv
+    grep '^Accession' ${DATA}/metadata.tmp.tsv
+    grep -v '^Accession' ${DATA}/metadata.tmp.tsv
 ) > ${DATA}/metadata.tsv
 rm -f ${DATA}/metadata.tmp.tsv
 
