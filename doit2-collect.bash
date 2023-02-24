@@ -6,7 +6,7 @@ rm -rf ${RAW}
 mkdir -p ${RAW}
 
 ${PIPELINE}/scripts/fix-genomes-metadata -H \
-	   > ${RAW}/_metadata_.tmp.tsv
+	   > ${RAW}/_metadata_.tsv
 
 # ------------------------------------------------------------------------
 # Collect the NCBI genomes
@@ -50,7 +50,7 @@ if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
     cat ${DOWNLOADS}/ncbi_*.jsonl \
 	| ${PIPELINE}/scripts/datasets-json2tsv \
 	| ${PIPELINE}/scripts/fix-genomes-metadata -n \
-		     >> ${RAW}/_metadata_.tmp.tsv
+		     >> ${RAW}/_metadata_.tsv
 
 fi
 
@@ -82,41 +82,8 @@ if [ "$MORE_GENOMES" ] ; then
 
     cat ${MORE_GENOMES}/_metadata_.tsv \
     	| ${PIPELINE}/scripts/fix-genomes-metadata -n \
-		     >> ${RAW}/_metadata_.tmp.tsv
+		     >> ${RAW}/_metadata_.tsv
 fi
-
-# ------------------------------------------------------------------------
-# Rename everthing according to metadata
-# ------------------------------------------------------------------------
-
-cat ${RAW}/_metadata_.tmp.tsv \
-    | ${PIPELINE}/scripts/make-filenames-from-metadata \
-		 -a ${COLLECT_EXCLUDE} ${COLLECT_ABBREVS} \
-		 > ${RAW}/_metadata_.tsv
-rm -f ${RAW}/_metadata_.tmp.tsv
-
-cd ${RAW}
-cat _metadata_.tsv | \
-    (
-	while IFS=$'\t' read NAME ACCESSION IGNORED ; do
-	    if [ "${NAME}" = Name ] ; then
-		continue
-	    fi
-	    if [ "${ACCESSION}" = "${NAME}" ] ; then
-		echo 1>&2 "## ${ACCESSION} unchanged"
-	    else
-		echo 1>&2 "## ${NAME} <- ${ACCESSION}"
-		for ext in fna faa gff ; do
-		    if [ -e ${ACCESSION}.${ext} ] ; then
-			if [ -e ${NAME}.${ext} ] ; then
-			    echo 1>&2 "${NAME}.fna already exists."
-			fi
-			mv "${ACCESSION}.${ext}" "${NAME}.${ext}"
-		    fi
-		done
-	    fi
-	done
-    )
 
 # ------------------------------------------------------------------------
 # Done.
