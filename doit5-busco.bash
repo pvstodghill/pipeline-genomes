@@ -16,13 +16,13 @@ else
 fi
 
 for FAA in ${GENOMES}/*.faa ; do
-    NAME=$(basename $FAA .faa)
-    echo 1>&2 "# Running BUSCO: $NAME"
+    ACCESSION=$(basename $FAA .faa)
+    echo 1>&2 "# Running BUSCO: $ACCESSION"
 
     busco \
 		     -q \
 		     -i ${FAA} \
-		     -o ${BUSCO}/output_${NAME} \
+		     -o ${BUSCO}/output_${ACCESSION} \
 		     -m proteins \
 		     ${LINEAGE_ARG} \
 		     -c ${THREADS} \
@@ -37,7 +37,7 @@ echo 1>&2 "# Generate summary"
 (
     cd ${BUSCO}
     
-    echo -e "Name\tdb\tC\tS\tD\tF\tM\tn"
+    echo -e "Accession\tdb\tC\tS\tD\tF\tM\tn"
     egrep '^'$'\t''C:' /dev/null output_*/short_summary.specific.*.txt \
 	| sed -r \
 	      -e 's/^output_//' \

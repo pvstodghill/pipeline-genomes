@@ -97,6 +97,6 @@ DOWNLOADS=${DATA}/1_downloads
 RAW=${DATA}/2_raw
 PROKKA=${DATA}/3_prokka
 GENOMES=${DATA}/genomes
-BUSCO=${DATA}/6_busco
+BUSCO=${DATA}/5_busco
 PYANI=${DATA}/7_pyani
 STATS=${DATA}/8_stats
