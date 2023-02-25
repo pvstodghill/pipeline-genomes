@@ -29,6 +29,7 @@ for TAXID in ${NCBI_REFSEQ_TAXONS} ; do
     echo 1>&2 "# Download (refseq) taxon $TAXID"
     datasets download genome \
 	     ${COMMON_ARGS} ${REFSEQ_ARGS} \
+	     --dehydrated \
 	     --filename ${DOWNLOADS}/ncbi_${_TAG}.zip \
 	     taxon ${TAXID}
 
@@ -51,6 +52,7 @@ for TAXID in ${NCBI_GENBANK_TAXONS} ; do
     echo 1>&2 "# Download (genbank) taxon $TAXID"
     datasets download genome \
 	     ${COMMON_ARGS} ${GENBANK_ARGS} \
+	     --dehydrated \
 	     --filename ${DOWNLOADS}/ncbi_${_TAG}.zip \
 	     taxon ${TAXID}
 
@@ -67,6 +69,7 @@ if [ "$NCBI_ACCESSIONS" ] ; then
     echo 1>&2 "# Download accession(s) $NCBI_ACCESSIONS"
     datasets download genome \
 	     ${COMMON_ARGS} \
+	     --dehydrated \
 	     --filename ${DOWNLOADS}/ncbi_${_TAG}.zip \
  	     accession ${NCBI_ACCESSIONS}
 

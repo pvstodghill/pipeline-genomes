@@ -22,6 +22,12 @@ if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
 	unzip -q -d ${NCBI_TMP}/${ncbi_xx} $z
     done
 
+    echo 1>&2 "# Rehydrate the NCBI genomes"
+    for z in ${DOWNLOADS}/ncbi_*.zip ; do
+	ncbi_xx=$(basename $z .zip)
+	datasets rehydrate --directory ${NCBI_TMP}/${ncbi_xx}
+    done
+
     echo 1>&2 "# Collect the NCBI genomes"
     for d in ${NCBI_TMP}/ncbi_*/ncbi_dataset/data/GC* ; do
 	accession=$(basename $d)
