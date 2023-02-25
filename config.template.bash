@@ -18,25 +18,6 @@
 
 # ------------------------------------------------------------------------
 
-GENOME_NAME_ARGS=
-# GENOME_NAME_ARGS+=" -s" # Do not include genus/species in genome names
-# GENOME_NAME_ARGS+=" -a" # Remove non-alphabetic chars from genome names
-# GENOME_NAME_ARGS+=" -u" # Make genome names uppercase
-# GENOME_NAME_ARGS+=" -d" # Throw error if dup names detected
-GENOME_NAME_ARGS+=" -D" # Mark older redundent assemblies heuristically
-
-# ------------------------------------------------------------------------
-
-# COLLECT_EXCLUDE= # accessions to exclude
-
-# COLLECT_ABBREVS=
-# COLLECT_ABBREVS+=" =Pantoea_agglomerans_pv_gypsophilae_"
-# COLLECT_ABBREVS+=" =Pantoea_agglomerans_pv_betae_"
-# COLLECT_ABBREVS+=" =Pantoea_agglomerans_"
-# COLLECT_ABBREVS+=" Peu_=Pantoea_eucalypti_"
-
-# ------------------------------------------------------------------------
-
 # Uncomment to reannotate with Prokka. Otherwise, use existing
 # annotations.
 FORCE_REANNOTATE=1
