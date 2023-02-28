@@ -10,9 +10,17 @@ rm -rf ${BUSCO}
 mkdir -p ${BUSCO}
 
 if [ "$BUSCO_LINEAGE" ] ; then
+    if [ "$BUSCO_LINEAGE" = FIXME ] ; then
+	echo 1>&2 "## !!! BUSCO_LINEAGE is not set correctly !!!"
+	exit 1
+    fi
     LINEAGE_ARG="--lineage_dataset $BUSCO_LINEAGE"
 else
     LINEAGE_ARG="--auto-lineage-prok"
+fi
+
+if [ -z "${BUSCO_DOWNLOADS}" ] ; then
+    BUSCO_DOWNLOADS=${BUSCO}/downloads
 fi
 
 for FAA in ${GENOMES}/*.faa ; do
@@ -26,7 +34,7 @@ for FAA in ${GENOMES}/*.faa ; do
 		     -m proteins \
 		     ${LINEAGE_ARG} \
 		     -c ${THREADS} \
-		     --download_path ${BUSCO}/downloads
+		     --download_path ${BUSCO_DOWNLOADS}
     done
 
 # ------------------------------------------------------------------------

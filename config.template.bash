@@ -30,6 +30,7 @@ FORCE_REANNOTATE=1
 
 #BUSCO_LINEAGE= # use --auto-lineage-prok
 BUSCO_LINEAGE=FIXME
+#BUSCO_DOWNLOADS=/tmp/busco_downloads
 
 # ------------------------------------------------------------------------
 
