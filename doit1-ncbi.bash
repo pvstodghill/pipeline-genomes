@@ -24,17 +24,38 @@ if [ "$NCBI_REFSEQ_REFERENCE_ONLY" ] ; then
     REFSEQ_ARGS+=" --reference"
 fi
 
+MORE_ACCESSIONS=${DOWNLOADS}/more.txt
+
 for TAXID in ${NCBI_REFSEQ_TAXONS} ; do
 
-    echo 1>&2 "# Download (refseq) taxon $TAXID"
-    datasets download genome \
-	     ${COMMON_ARGS} ${REFSEQ_ARGS} \
-	     --dehydrated \
-	     --filename ${DOWNLOADS}/ncbi_${_TAG}.zip \
-	     taxon ${TAXID}
+    if [ "${UPDATE_GENOMES}" ] ; then
 
-    _I=$[$_I + 1]
-    _TAG=$(printf "%02d" $_I)
+	echo 1>&2 "# Find missing (refseq) genomes for taxon $TAXID"
+	datasets summary genome taxon ${REFSEQ_ARGS} ${TAXID} \
+	    | ./pipeline/scripts/datasets-json2tsv  | cut -f1 \
+	    | \
+	    while read ACCESSION ; do
+		if [ "$ACCESSION" = Accession ] ; then
+		    : nop
+		elif [ ! -e "${UPDATE_GENOMES}/data/genomes/$ACCESSION.fna" ] ; then
+		    echo 1>&2 "## Adding $ACCESSION"
+		    echo $ACCESSION >> ${MORE_ACCESSIONS}
+		fi
+	    done
+
+    else
+
+	echo 1>&2 "# Download (refseq) taxon $TAXID"
+	datasets download genome \
+		 ${COMMON_ARGS} ${REFSEQ_ARGS} \
+		 --dehydrated \
+		 --filename ${DOWNLOADS}/ncbi_${_TAG}.zip \
+		 taxon ${TAXID}
+
+	_I=$[$_I + 1]
+	_TAG=$(printf "%02d" $_I)
+
+    fi
 
 done
 
@@ -49,15 +70,36 @@ fi
 
 for TAXID in ${NCBI_GENBANK_TAXONS} ; do
 
-    echo 1>&2 "# Download (genbank) taxon $TAXID"
-    datasets download genome \
-	     ${COMMON_ARGS} ${GENBANK_ARGS} \
-	     --dehydrated \
-	     --filename ${DOWNLOADS}/ncbi_${_TAG}.zip \
-	     taxon ${TAXID}
+    if [ "${UPDATE_GENOMES}" ] ; then
 
-    _I=$[$_I + 1]
-    _TAG=$(printf "%02d" $_I)
+	echo 1>&2 "# Find missing (genbank) genomes for taxon $TAXID"
+	datasets summary genome taxon ${GENBANK_ARGS} ${TAXID} \
+	    | ./pipeline/scripts/datasets-json2tsv  | cut -f1 \
+	    | (
+	    while read ACCESSION ; do
+		if [ "$ACCESSION" = Accession ] ; then
+		    : nop
+		elif [ ! -e "${UPDATE_GENOMES}/data/genomes/$ACCESSION.fna" ] ; then
+		    echo 1>&2 "## Adding $ACCESSION"
+		    echo $ACCESSION >> ${MORE_ACCESSIONS}
+		fi
+	    done
+
+	)
+
+    else
+
+	echo 1>&2 "# Download (genbank) taxon $TAXID"
+	datasets download genome \
+		 ${COMMON_ARGS} ${GENBANK_ARGS} \
+		 --dehydrated \
+		 --filename ${DOWNLOADS}/ncbi_${_TAG}.zip \
+		 taxon ${TAXID}
+
+	_I=$[$_I + 1]
+	_TAG=$(printf "%02d" $_I)
+
+    fi
 
 done
 
@@ -66,12 +108,43 @@ done
 # ------------------------------------------------------------------------
 
 if [ "$NCBI_ACCESSIONS" ] ; then
-    echo 1>&2 "# Download accession(s) $NCBI_ACCESSIONS"
+
+    if [ "${UPDATE_GENOMES}" ] ; then
+
+	echo 1>&2 "# Find missing accessions"
+	for ACCESSION in $NCBI_ACCESSIONS ; do
+	    if [ ! -e "${UPDATE_GENOMES}/data/genomes/$ACCESSION.fna" ] ; then
+		echo 1>&2 "## Adding $ACCESSION"
+		echo $ACCESSION >> ${MORE_ACCESSIONS}
+	    fi
+	done
+
+    else
+
+	echo 1>&2 "# Download accession(s): $NCBI_ACCESSIONS"
+	datasets download genome \
+		 ${COMMON_ARGS} \
+		 --dehydrated \
+		 --filename ${DOWNLOADS}/ncbi_${_TAG}.zip \
+ 		 accession ${NCBI_ACCESSIONS}
+
+    fi
+
+fi
+
+# ------------------------------------------------------------------------
+# Download missing accessions
+# ------------------------------------------------------------------------
+
+if [ -e ${MORE_ACCESSIONS} ] ; then
+
+    echo 1>&2 "# Download missing accession(s): $(cat ${MORE_ACCESSIONS})"
     datasets download genome \
 	     ${COMMON_ARGS} \
 	     --dehydrated \
 	     --filename ${DOWNLOADS}/ncbi_${_TAG}.zip \
- 	     accession ${NCBI_ACCESSIONS}
+ 	     accession $(cat ${MORE_ACCESSIONS})
+
 
 fi
 
