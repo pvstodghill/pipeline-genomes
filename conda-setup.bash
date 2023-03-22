@@ -38,4 +38,4 @@ __ conda activate ${NAME}
 
 __ $_conda $_install -y ${PACKAGES}
 
-# __ pip install FIXME
+# __ pip $_install FIXME
