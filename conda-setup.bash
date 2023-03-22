@@ -28,11 +28,14 @@ function __ {
 if [ "$1" = -f ] ; then
     __ conda env remove -y --name ${NAME}
 fi
+
+_install=update
 if [ ! -d ${CONDA_PREFIX}/envs/${NAME} ] ; then
     __ conda create -y --name ${NAME}
+    _install=install
 fi
 __ conda activate ${NAME}
 
-__ $_conda install -y ${PACKAGES}
+__ $_conda $_install -y ${PACKAGES}
 
 # __ pip install FIXME
