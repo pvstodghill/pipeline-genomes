@@ -3,6 +3,9 @@
 set -e
 
 NAME=pipeline-genomes
+if [ "${TARGET_CONDA_ENV}" ] ; then
+    NAME="${TARGET_CONDA_ENV}"
+fi
 
 CONDA_PREFIX=$(dirname $(dirname $(type -p conda)))
 . "${CONDA_PREFIX}/etc/profile.d/conda.sh"
