@@ -67,7 +67,7 @@ fi
 if [ "$MORE_GENOMES" ] ; then
     dups=
     echo 1>&2 "# Collect the local genomes"
-    for f in $MORE_GENOMES/*.f?a ; do
+    for f in $MORE_GENOMES/*.f?a $MORE_GENOMES/*.g?f ; do
 	case "$f" in
 	    *.fna|*.faa|*.gff) : ok ;;
 	    *)
