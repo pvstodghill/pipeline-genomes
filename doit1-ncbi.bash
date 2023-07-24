@@ -23,6 +23,9 @@ REFSEQ_ARGS="--assembly-source refseq"
 if [ "$NCBI_REFSEQ_REFERENCE_ONLY" ] ; then
     REFSEQ_ARGS+=" --reference"
 fi
+if [ "$NCBI_REFSEQ_COMPLETE_ONLY" ] ; then
+    REFSEQ_ARGS+=" --assembly-level complete"
+fi
 
 MORE_ACCESSIONS=${DOWNLOADS}/more.txt
 
@@ -66,6 +69,9 @@ done
 GENBANK_ARGS="--assembly-source genbank"
 if [ "$NCBI_GENBANK_REFERENCE_ONLY" ] ; then
     GENBANK_ARGS+=" --reference"
+fi
+if [ "$NCBI_GENBANK_COMPLETE_ONLY" ] ; then
+    REFSEQ_ARGS+=" --assembly-level complete"
 fi
 
 for TAXID in ${NCBI_GENBANK_TAXONS} ; do
