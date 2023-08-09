@@ -67,26 +67,29 @@ fi
 if [ "$MORE_GENOMES" ] ; then
     dups=
     echo 1>&2 "# Collect the local genomes"
-    for f in $MORE_GENOMES/*.f?a $MORE_GENOMES/*.g?f ; do
-	case "$f" in
-	    *.fna) : ok ;;
-	    *.faa|*.gff)
-		if [ "$FORCE_REANNOTATE" ] ; then
-		    continue
-		fi
-		;;
-	    *)
-		echo 1>&2 "Unknown local genome type: $f"
-		exit 1
-	esac
-	ff=$(basename $f)
-	if [ -e ${RAW}/$ff ] ; then
-	    echo 1>&2 "Already exists: ${RAW}/$ff"
-	    dups=1
-	else
-	    cp $f ${RAW}/$ff
-	fi
-    done
+    (
+	shopt -s nullglob
+	for f in $MORE_GENOMES/*.f?a $MORE_GENOMES/*.g?f ; do
+	    case "$f" in
+		*.fna) : ok ;;
+		*.faa|*.gff)
+		    if [ "$FORCE_REANNOTATE" ] ; then
+			continue
+		    fi
+		    ;;
+		*)
+		    echo 1>&2 "Unknown local genome type: $f"
+		    exit 1
+	    esac
+	    ff=$(basename $f)
+	    if [ -e ${RAW}/$ff ] ; then
+		echo 1>&2 "Already exists: ${RAW}/$ff"
+		dups=1
+	    else
+		cp $f ${RAW}/$ff
+	    fi
+	done
+    )
     if [ "$dups" ] ; then
 	exit 1
     fi
