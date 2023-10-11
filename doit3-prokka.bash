@@ -53,9 +53,17 @@ cat ${RAW}/_metadata_.tsv | (
 	echo 1>&2 "# Running Prokka: $ACCESSION ($ORGANISM $STRAIN)"
 	rm -rf ${OUTPUT}
 
+	if [ "$FORCE_REANNOTATE" = 2 ] ; then
+	    PROTEIN_ARGS="--protein ${RAW}/${ACCESSION}.gbk"
+	    echo "## with \"$PROTEIN_ARGS\""
+	else
+	    PROTEIN_ARGS=
+	fi
+
 	prokka ${PROKKA_ARGS} \
 	     --outdir ${OUTPUT} \
 	     --strain ${SAFE_STRAIN} \
+	     ${PROTEIN_ARGS} \
 	     ${RAW}/${ACCESSION}.fna
 
 	# --locustag ${SAFE_ACCESSION}_prokka

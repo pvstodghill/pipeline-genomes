@@ -69,17 +69,15 @@ if [ "$MORE_GENOMES" ] ; then
     echo 1>&2 "# Collect the local genomes"
     (
 	shopt -s nullglob
-	for f in $MORE_GENOMES/*.f?a $MORE_GENOMES/*.g?f ; do
+	for f in $MORE_GENOMES/*.* ; do
 	    case "$f" in
+		*.faa) : ok ;;
 		*.fna) : ok ;;
-		*.faa|*.gff)
-		    if [ "$FORCE_REANNOTATE" ] ; then
-			continue
-		    fi
-		    ;;
+		*.gbk) : ok ;;
+		*.gff) : ok ;;
+		*.gtf) : ok ;;
 		*)
-		    echo 1>&2 "Unknown local genome type: $f"
-		    exit 1
+		    continue
 	    esac
 	    ff=$(basename $f)
 	    if [ -e ${RAW}/$ff ] ; then
