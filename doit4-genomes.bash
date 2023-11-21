@@ -17,8 +17,8 @@ cat ${RAW}/_metadata_.tsv | (
 	    continue
 	fi
 	for EXT in fna faa gff ; do
-	    if [ -e ${PROKKA}/${ACCESSION}_prokka/output.${EXT} ] ; then
-		cp ${PROKKA}/${ACCESSION}_prokka/output.${EXT} ${GENOMES}/${ACCESSION}.${EXT}
+	    if [ -e ${REANNOTATED}/${ACCESSION}_prokka/output.${EXT} ] ; then
+		cp ${REANNOTATED}/${ACCESSION}_prokka/output.${EXT} ${GENOMES}/${ACCESSION}.${EXT}
 	    elif [ -e ${RAW}/${ACCESSION}.${EXT} ] ; then
 		cp ${RAW}/${ACCESSION}.${EXT} ${GENOMES}/${ACCESSION}.${EXT}
 	    else

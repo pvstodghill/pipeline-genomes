@@ -3,9 +3,9 @@
 . $(dirname ${BASH_SOURCE[0]})/doit-preamble.bash
 
 if [ -z "${PIPELINE_RESTART}" ] ; then
-    rm -rf ${PROKKA}
+    rm -rf ${REANNOTATED}
 fi
-mkdir -p ${PROKKA}
+mkdir -p ${REANNOTATED}
 
 # ------------------------------------------------------------------------
 # Run prokka to reannotate genomes
@@ -43,7 +43,7 @@ cat ${RAW}/_metadata_.tsv | (
 	SAFE_STRAIN="$(echo "$STRAIN" | sed -r -e 's/[^A-Za-z0-9_-]+//g')"
 	SAFE_ACCESSION="$(echo "$ACCESSION" | sed -r -e 's/[^A-Za-z0-9_.-]+//g')"
 
-	OUTPUT=${PROKKA}/${ACCESSION}_prokka
+	OUTPUT=${REANNOTATED}/${ACCESSION}_prokka
 
 	if [ -e ${OUTPUT}/output.gbk ] ; then
 	    echo 1>&2 "# Skipping: $ACCESSION ($ORGANISM $STRAIN)"
