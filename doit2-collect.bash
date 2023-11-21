@@ -25,7 +25,7 @@ if [ -e ${DOWNLOADS}/ncbi_00.zip ] ; then
     echo 1>&2 "# Rehydrate the NCBI genomes"
     for z in ${DOWNLOADS}/ncbi_*.zip ; do
 	ncbi_xx=$(basename $z .zip)
-	datasets rehydrate --directory ${NCBI_TMP}/${ncbi_xx}
+	datasets rehydrate --no-progressbar --directory ${NCBI_TMP}/${ncbi_xx}
     done
 
     echo 1>&2 "# Collect the NCBI genomes"
