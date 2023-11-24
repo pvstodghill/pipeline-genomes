@@ -20,15 +20,20 @@
 
 # ------------------------------------------------------------------------
 
-# Uncomment to reannotate with Prokka. Otherwise, use existing
+# Uncomment to reannotate with Prokka or BAKTA. Otherwise, use existing
 # annotations.
 #FORCE_REANNOTATE=1 # Perform de novo protein id
 FORCE_REANNOTATE=2 # use RefSeq or Genbank .gbk as trusted protein DB
+
+REANNOTATE_WITH=prokka
+#REANNOTATE_WITH=bakta
 
 # # v-- You probably don't want to uncomment these. They have no effect.
 #PROKKA_GRAM=neg
 #PROKKA_GENUS=Pantoea
 #PROKKA_SPECIES=allii
+
+#BAKTA_DB=/path/to/bakta/db_dir
 
 # ------------------------------------------------------------------------
 

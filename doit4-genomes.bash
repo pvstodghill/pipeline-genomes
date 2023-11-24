@@ -12,13 +12,15 @@ rm -rf ${GENOMES}
 mkdir -p ${GENOMES}
 
 cat ${RAW}/_metadata_.tsv | (
-    while IFS=$'\t' read ACCESSION IGNORED ; do
+    while IFS=$'\t' read ACCESSION SOURCE ORGANISM STRAIN LEVEL DATE ; do
 	if [ "${ACCESSION}" = "Accession" ] ; then
 	    continue
 	fi
 	for EXT in fna faa gff ; do
 	    if [ -e ${REANNOTATED}/${ACCESSION}_prokka/output.${EXT} ] ; then
 		cp ${REANNOTATED}/${ACCESSION}_prokka/output.${EXT} ${GENOMES}/${ACCESSION}.${EXT}
+	    elif [ -e ${REANNOTATED}/${ACCESSION}_bakta/output.${EXT}* ] ; then
+		cp ${REANNOTATED}/${ACCESSION}_bakta/output.${EXT}* ${GENOMES}/${ACCESSION}.${EXT}
 	    elif [ -e ${RAW}/${ACCESSION}.${EXT} ] ; then
 		cp ${RAW}/${ACCESSION}.${EXT} ${GENOMES}/${ACCESSION}.${EXT}
 	    else

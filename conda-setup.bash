@@ -16,6 +16,7 @@ PACKAGES=
 PACKAGES+=" busco"
 PACKAGES+=" ncbi-datasets-cli"
 PACKAGES+=" prokka"
+#PACKAGES+=" bakta" # conflicts with busco
 
 if [ "$(type -p mamba)" ] ; then
     _conda="mamba --no-banner"

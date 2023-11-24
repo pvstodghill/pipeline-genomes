@@ -1,7 +1,13 @@
 ---
 image: pvstodghill/pipeline-genomes
-version: 2023-10-06
+version: 2023-11-21
 commands:
-  - busco
-  - datasets
-  - prokka
+  - busco # 5.5.0
+  - datasets # 15.29.0
+  - prokka # 1.14.6
+
+---
+image: pvstodghill/bakta
+version: 1.8.2__2023-11-21
+commands:
+  - bakta

@@ -9,9 +9,9 @@ fulltag=$(echo ${IMAGE}:${RELEASE})
 set -x
 set -e
 
-docker build -t ${fulltag} .
+docker build --pull -t ${fulltag} .
 #set +e
-docker run --rm -w /tmp/. ${fulltag} busco --version
+docker run --rm -w /tmp/. ${fulltag} conda list
 #set -e
 docker push ${fulltag}
 docker tag ${fulltag} ${IMAGE}:latest
