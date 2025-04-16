@@ -1,16 +1,5 @@
 #! /bin/bash
 
-# In order to help test portability, I eliminate all of my
-# personalizations from the PATH, etc.
-if [ "$PVSE" ] ; then
-    export PATH=/usr/local/bin:/usr/bin:/bin
-    export PERL5LIB=
-    export PERL_LOCAL_LIB_ROOT=
-    export PERL_MB_OPT=
-    export PERL_MM_OPT=
-    export PYTHONPATH=
-fi
-
 # ------------------------------------------------------------------------
 
 # yuck. ugly.
@@ -31,6 +20,19 @@ DATA=${DATA:-data}
 # ------------------------------------------------------------------------
 
 . config.bash
+
+# ------------------------------------------------------------------------
+
+# In order to help test portability, I eliminate all of my
+# personalizations from the PATH, etc.
+if [ "$PVSE" -a "$PACKAGES_FROM" != native ] ; then
+    export PATH=/usr/local/bin:/usr/bin:/bin
+    export PERL5LIB=
+    export PERL_LOCAL_LIB_ROOT=
+    export PERL_MB_OPT=
+    export PERL_MM_OPT=
+    export PYTHONPATH=
+fi
 
 # ------------------------------------------------------------------------
 
