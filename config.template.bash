@@ -50,6 +50,9 @@ PACKAGES_FROM=howto
 # PACKAGES_FROM=conda
 # CONDA_ENV=pipeline-genomes
 
+# # Uncomment to find packages on $PATH
+# PACKAGES_FROM=native
+
 #THREADS=$(nproc --all)
 
 # ------------------------------------------------------------------------
