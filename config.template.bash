@@ -37,6 +37,8 @@ REANNOTATE_WITH=prokka
 
 # ------------------------------------------------------------------------
 
+#SKIP_BUSCO=1 # uncomment to _not_ run BUSCO
+
 #BUSCO_LINEAGE= # use --auto-lineage-prok
 BUSCO_LINEAGE=FIXME
 #BUSCO_DOWNLOADS=/tmp/busco_downloads
