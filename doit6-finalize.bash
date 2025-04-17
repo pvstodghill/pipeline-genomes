@@ -33,10 +33,15 @@ cat ${RAW}/_metadata_.tsv | (
 
 echo 1>&2 '# Generating metadata file...'
 
+BUSCO_REPORT=${BUSCO}/__report__.txt
+if [ "$SKIP_BUSCO" ] ; then
+    BUSCO_REPORT=
+fi
+
 ${PIPELINE}/scripts/my-join \
 	   ${RAW}/_metadata_.tsv \
 	   ${STATS}/stats.tsv \
-	   ${BUSCO}/__report__.txt \
+	   ${BUSCO_REPORT} \
 	   > ${DATA}/metadata.tmp.tsv
 
 (
