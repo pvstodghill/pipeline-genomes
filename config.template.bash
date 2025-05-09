@@ -23,7 +23,7 @@
 # Uncomment to reannotate with Prokka or BAKTA. Otherwise, use existing
 # annotations.
 #FORCE_REANNOTATE=1 # Perform de novo protein id
-FORCE_REANNOTATE=2 # use RefSeq or Genbank .gbk as trusted protein DB
+FORCE_REANNOTATE=2 # use RefSeq or Genbank .gbk as trusted protein DB for prokka or bakta
 
 REANNOTATE_WITH=prokka
 #REANNOTATE_WITH=bakta
