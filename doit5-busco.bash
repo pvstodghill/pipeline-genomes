@@ -54,7 +54,7 @@ echo 1>&2 "# Generate summary"
     egrep '^'$'\t''C:' /dev/null output_*/short_summary.specific.*.txt \
 	| sed -r \
 	      -e 's/^output_//' \
-	      -e 's|/short_summary\.specific\.(.+)_odb10.output_.+\.txt:|\t\1|' \
+	      -e 's|/short_summary\.specific\.(.+)_odb[0-9]+.output_.+\.txt:|\t\1|' \
 	      -e 's/[ \t]+$//' \
 	      -e 's/C:([0-9.%]+)\[S:([0-9.%]+),D:([0-9.%]+)\],F:([0-9.%]+),M:([0-9.%]+),n:([0-9.%]+)/\1\t\2\t\3\t\4\t\5\t\6/'
 ) > ${BUSCO}/__report__.txt
