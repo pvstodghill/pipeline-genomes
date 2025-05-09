@@ -1,13 +1,41 @@
 ---
-image: pvstodghill/pipeline-genomes
-version: 2023-11-21
-commands:
-  - busco # 5.5.0
-  - datasets # 15.29.0
-  - prokka # 1.14.6
-
----
-image: pvstodghill/bakta
-version: 1.8.2__2023-11-21
+environment: stubs__bakta
+packages: bakta
+channels:
+  - conda-forge
+  - bioconda
 commands:
   - bakta
+
+---
+environment: stubs__busco
+packages: busco
+channels:
+  - conda-forge
+  - bioconda
+commands:
+  - busco
+
+---
+environment: stubs__ncbi-datasets-cli
+packages:  ncbi-datasets-cli
+channels:
+  - conda-forge
+  - bioconda
+channels:
+  - conda-forge
+  - bioconda
+commands:
+  - dataformat
+
+---
+environment: stubs__prokka
+packages: prokka
+channels:
+  - conda-forge
+  - bioconda
+channels:
+  - conda-forge
+  - bioconda
+commands:
+  - prokka
