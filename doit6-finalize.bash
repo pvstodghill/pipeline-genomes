@@ -50,6 +50,20 @@ ${PIPELINE}/scripts/my-join \
 ) > ${DATA}/metadata.tsv
 rm -f ${DATA}/metadata.tmp.tsv
 
+# ------------------------------------------------------------------------
+# Generating metadata file...
+# ------------------------------------------------------------------------
+
+echo 1>&2 '# print version numbers...'
+
+(
+    set -x
+    bakta --version
+    busco --version
+    datasets --version
+    prokka --version
+)
+
 
 # ------------------------------------------------------------------------
 # Done.
