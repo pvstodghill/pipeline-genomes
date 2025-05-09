@@ -9,7 +9,9 @@ commands:
 
 ---
 environment: stubs__busco
-packages: busco
+packages:
+  - busco
+  - python<3.12 # https://gitlab.com/ezlab/busco/-/issues?show=eyJpaWQiOiI4MDUiLCJmdWxsX3BhdGgiOiJlemxhYi9idXNjbyIsImlkIjoxNjY2ODc4NTR9
 channels:
   - conda-forge
   - bioconda
@@ -26,7 +28,7 @@ channels:
   - conda-forge
   - bioconda
 commands:
-  - dataformat
+  - datasets
 
 ---
 environment: stubs__prokka
